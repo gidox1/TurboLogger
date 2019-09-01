@@ -1,7 +1,7 @@
 {
   "name": "easylogger",
   "version": "1.0.0",
-  "description": "Console and file logger for Node.js Applications",
+  "description": "Console, file and Slack logger for Node.js Applications",
   "main": "server.js",
   "directories": {
     "test": "tests"
