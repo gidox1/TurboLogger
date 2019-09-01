@@ -1,0 +1,32 @@
+{
+  "name": "easylogger",
+  "version": "1.0.0",
+  "description": "Console and file logger for Node.js Applications",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "joi": "^14.3.1",
+    "request": "^2.88.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gidox1/easyLogger.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gidox1/easyLogger/issues"
+  },
+  "homepage": "https://github.com/gidox1/easyLogger#readme"
+}
