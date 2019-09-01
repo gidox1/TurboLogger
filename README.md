@@ -38,6 +38,6 @@ Console and file logger for Node.js Applications
       const context = 'info' // Sets the logger context //['info', 'verbose', 'silly', 'error', 'warn', 'debug']
       const logger = require('turbo-logger').slackStream(config);
       
-      logger.slack("This is a Slack Message"); //Sends message to slack
+      logger.slack("This is a Slack Message", context); //Sends message to slack
 
       ```
