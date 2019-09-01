@@ -1,7 +1,7 @@
 # easyLogger
 Console and file logger for Node.js Applications
 
-## TABLE OF CONTENTS
+## CONTENTS
   - Installation
     - ```npm i --save turbo-logger```
 
@@ -41,3 +41,5 @@ Console and file logger for Node.js Applications
       logger.slack("This is a Slack Message", context); //Sends message to slack
 
       ```
+  - License
+    MIT
