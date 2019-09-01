@@ -42,4 +42,4 @@ Console and file logger for Node.js Applications
 
       ```
   - License
-    MIT
+      - MIT
