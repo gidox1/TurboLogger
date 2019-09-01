@@ -10,8 +10,8 @@ Console and file logger for Node.js Applications
     const config = { scope: 'default', level: 'info', file: true } 
     const logger = require('turbo-logger').createStream(config).log();
     
-    logger.info('hello world'); //returns the said message in the console or file as info (color: green)
-    logger.error('hello world'); // returns the error to the console or file (color: red)
+    logger.info('hello world'); //returns the said message in the console and file as info (color: green)
+    logger.error('hello world'); // returns the error to the console and file (color: red)
     logger.warn('hello world'); // Returns the warning message (color: yellow)
     
     ```
