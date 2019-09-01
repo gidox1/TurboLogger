@@ -13,6 +13,7 @@ Console and file logger for Node.js Applications
     logger.info('hello world'); //returns the said message in the console or file as info (color: green)
     logger.error('hello world'); // returns the error to the console or file (color: red)
     logger.warn('hello world'); // Returns the warning message (color: yellow)
+    
     ```
 
   - Console Log
@@ -23,10 +24,10 @@ Console and file logger for Node.js Applications
       ```false```, it logs to only console. To log to both, set the value of ```file``` to ```true```.
 
   - Slack log
-    - The slack log requires some parameters, just like the default log. The parameters must include the ```scope```,
-     ```webhook_url``` and ```channel```. To use this Slack log, you need to create a slack app and also create an 
-      incoming webhook_url through which request will be forwarded to Slack. For more details check out 
-      [this brilliant guide](https://api.slack.com/apps).
+    - The slack log requires two parameters, just like the default log. The config must include the ```scope```,
+     ```webhook_url``` and ```channel```, the second parameter is the context. To use this Slack log, you need 
+      to create a slack app and also create an incoming webhook_url through which request will be forwarded to Slack. 
+      For more details check out [this brilliant guide](https://api.slack.com/apps).
 
       ```node
       const config = {
@@ -34,8 +35,9 @@ Console and file logger for Node.js Applications
                   webhook_url : 'https://hooks.slack.com/services/XXXXXXXXX/XXXXXXX/XXXXXXXXXXXXXXX',
                   channel: 'test_channel'
       }
-      
+      const context = 'info' // Sets the logger context //['info', 'verbose', 'silly', 'error', 'warn', 'debug']
       const logger = require('turbo-logger').slackStream(config);
+      
       logger.slack("This is a Slack Message"); //Sends message to slack
 
       ```
