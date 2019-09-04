@@ -1,5 +1,5 @@
 {
-  "name": "easylogger",
+  "name": "turbo-logger",
   "version": "1.0.0",
   "description": "Console, file and Slack logger for Node.js Applications",
   "main": "server.js",
@@ -16,7 +16,7 @@
     "mocha": "^6.2.0"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "./node_modules/mocha/bin/mocha tests/app_test.js",
     "start": "node server.js"
   },
   "repository": {
