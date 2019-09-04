@@ -3,13 +3,11 @@ const expect = chai.expect
 const loggerSetup = require('../app/loggerSetUp')
 const schema = require('../app/validator')
 const joi = require('joi');
+const helpers = require('./helpers/helpers');
 
 describe('Default Logger', function(done) {
-    const payload = {
-        scope: 'default',
-        level: 'info',
-        file: true,
-    }
+
+    const payload = helpers.getDefaultScopePayload();
 
     it('Should validate the payload', function() {
         const result = joi.validate(payload, schema.Schema);
@@ -25,14 +23,11 @@ describe('Default Logger', function(done) {
 })
 
 describe('Slack Logger', function() {
-    const testPayload = {
-        scope: 'slack',
-        webhook_url : `https://hooks.slack.com/services/${process.env.SECRET}`,
-        channel: 'test_channel'
-    }
+
+    const payload = helpers.getSlackScopePayload();
 
     it('Should Validate the payload', function() {
-        const result = joi.validate(testPayload, schema.slackSchema);
+        const result = joi.validate(payload, schema.slackSchema);
         expect(result.value).to.include.all.keys('scope', 'webhook_url', 'channel');
     })
 })
