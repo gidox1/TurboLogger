@@ -2,7 +2,7 @@
   "name": "turbo-logger",
   "version": "1.0.2",
   "description": "Console, file and Slack logger for Node.js Applications",
-  "main": "server.js",
+  "main": "app/logger.js",
   "directories": {
     "test": "tests"
   },
@@ -16,8 +16,7 @@
     "mocha": "^6.2.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha tests/app_test.js",
-    "start": "node server.js"
+    "test": "./node_modules/mocha/bin/mocha tests/app_test.js"
   },
   "repository": {
     "type": "git",
