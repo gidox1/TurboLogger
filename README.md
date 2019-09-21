@@ -1,4 +1,4 @@
-# easyLogger
+# TurboLogger
 Console and file logger for Node.js Applications
 
 ## CONTENTS
