@@ -18,14 +18,13 @@ class LTransport {
       if(payload.error) throw new Error('A vaidation error occured');
 
       if(appConfig.slack) {
-        console.log('here')
-        return payload.value;
+          return payload.value;
       }
       else {
         if(payload.value.file === true) {
               payload.value.logDir = defaultConfig.logDir;
             }
-            return this.createTransports(payload.value);
+          return this.createTransports(payload.value);
       }
     }
 
@@ -36,7 +35,6 @@ class LTransport {
      * @param {param object} param 
      */
     createTransports(param) {
-      console.log('transports created');
       const filename = path.join(defaultConfig.logDir, 'info.log');
       const transportArray = [];
       transportArray.push(defaultConfig.transpotsLevelConfig);
@@ -70,7 +68,7 @@ class LTransport {
      */
     pushTransports(transport, config) {
       const {message, level} = config;
-      
+
       switch (level) {
         case 'warn' :
           return transport.warn(message);

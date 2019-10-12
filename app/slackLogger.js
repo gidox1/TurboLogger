@@ -14,7 +14,6 @@ class SlackLogger {
      * @param {string} payload
      */
     slack(message, payload) {
-        console.log('within slack logger')
         const log = new loggerSetUp();
         const validatedPayload = log.validatePayload(payload);
         const stringifiedMessage = JSON.stringify(message);
@@ -29,7 +28,7 @@ class SlackLogger {
         }
 
         const slackBody = {
-            channel: `${validatedPayload.channel}`,
+            channel: `${validatedPayload.slack.channel}`,
             text: `<!channel> *SLack Logger Message*`,
             attachments: [{
                 text: `${stringifiedMessage}`,
@@ -37,7 +36,6 @@ class SlackLogger {
             }]
         }
         const options = {url: validatedPayload.slack.webhook_url, body: slackBody, method, contentType, json}
-        console.log('making request now')
           
         return request(options, (err, res) => {
             if(err) {console.log(err); throw new Error('Error occured while making reuest');}

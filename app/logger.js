@@ -10,81 +10,78 @@ class Logger {
         this.appConfig = appConfig;
     }
 
-    log(message) {
-        console.log('setting up winston', message, this.appConfig, '\n\n')
-        const transport = this.setUpWinston(this.appConfig);
-        console.log(transport, 'trassss')
-        const level = this.appConfig.level;
-        const config = {level, message};
-        return setUp.pushTransports(transport, config)
+
+    /**
+     * Logs to file, Console and Slack
+     * @param {String} message 
+     * @param {Object} appConfig 
+     */
+    hybridLogger(message, appConfig) {
+        const callBack =  this.logSlack(message, appConfig);
+
+        if(callBack) {
+            delete appConfig.slack;
+            return this.consoleLogger(message, appConfig);
+        }
     }
 
+
+
+    /**
+     * External Endpoint for the logger
+     * @param {String} message 
+     */
+    log(message) {
+        if(this.appConfig.file == true && this.appConfig.slack) {
+            return  this.hybridLogger(message, this.appConfig);
+        }
+        else if (this.appConfig.slack) {
+            return  this.logSlack(message, this.appConfig);
+        }
+        else {
+            return this.consoleLogger(message, this.appConfig)
+        }
+    }
+
+
+
+    /**
+     * Set up winston with the app Config
+     * @param {Object} appConfig 
+     */
     setUpWinston(appConfig) {
-        console.log('set up')
-        return setUp.validatePayload(appConfig);
+        return  setUp.validatePayload(appConfig);
     }
-}
 
 
-class Slack {
 
-    constructor(appConfig) {
-        this.appConfig = appConfig;
-    } 
+    /**
+     * Set up console transports
+     * @param {String} message 
+     * @param {Object} appConfig 
+     */
+    consoleLogger(message, appConfig) {
+        const transport = this.setUpWinston(appConfig);
+        const level = appConfig.level;
+        const config = {level, message};
+        return setUp.pushTransports(transport, config);
+    }
 
-    log(message) {
-        console.log('here oo', message, this.appConfig)
-        const appConfig = this.appConfig;
+
+    /**
+     * Set up Slack logger
+     * @param {String} message 
+     * @param {Object} appConfig 
+     */
+    logSlack(message, appConfig) {
         const slackLogger = new SlackStream();
-        return slackLogger.slack(message, appConfig)
+        return  slackLogger.slack(message, appConfig)
     }
-
-}
-
-
-class Hybrid {
-
-    constructor(appConfig) {
-        this.appConfig = appConfig;
-    }
-
-    log(message) {
-        const res = this.logSLack(message);
-        const loga = this.defaultLogger(message)
-        // console.log(res.body, 'res')
-        return new Promise.all([res, loga])
-                    .then(resp => {
-                        console.log(resp, 'resp')
-                    })
-                    .catch(err => {
-                        console.log(err, 'err');
-                    })
-    }
-
-    logSLack(message) {
-        const slackLog = new Slack(this.appConfig);
-        return slackLog.log(message);
-    }
-
-    defaultLogger(message) {
-        console.log(message, 'mess')
-        const logger = new Logger(this.appConfig);
-        return logger.log(message);
-    }
-
 }
 
 
 module.exports = {
     createStream: function (appConfig) {
-        if(appConfig.hybrid_log == true) {
-            console.log('hybrid');
-            return new Hybrid(appConfig);
-        }
-        else if(appConfig.slack && appConfig.file == true) {
-            return new Slack(appConfig);
-        }
-        console.log('no slack')
-        return new Logger(appConfig);
+            return new Logger(appConfig);
     }
 }

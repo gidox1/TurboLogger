@@ -6,7 +6,6 @@ const Schema = joi.object({
     logDir: joi.string().optional(),
     appLabel: joi.boolean().optional(),
     colorize: joi.boolean().optional(),
-    hybrid_log: joi.boolean().required(),
     slack: joi.object({
         webhook_url: joi.string().required(),
         channel: joi.string().required(),
