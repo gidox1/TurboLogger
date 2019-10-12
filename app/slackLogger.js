@@ -39,7 +39,6 @@ class SlackLogger {
           
         return request(options, (err, res) => {
             if(err) {console.log(err); throw new Error('Error occured while making reuest');}
-            console.log('body',res.body)
             return res.body;
           })              
     }
