@@ -71,9 +71,6 @@ class Logger {
         if(this.appConfig.file == true && this.appConfig.slack) {
             return  utils.hybridLogger(message, this.appConfig);
         }
-        else if (this.appConfig.slack) {
-            return  utils.logSlack(message, this.appConfig);
-        }
         else {
             return utils.consoleLogger(message, this.appConfig)
         }
