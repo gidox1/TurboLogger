@@ -2,9 +2,9 @@
 
 const { createLogger, format, transports } = require('winston');
 const winston = require('winston')
-const joi = require('joi');
+const joi = require('@hapi/joi');
 const defaultConfig = require('./config');
-const schema = require('./validator');
+const schema = require('./validator').Schema;
 const path = require('path');
 
 class LTransport {
@@ -14,27 +14,18 @@ class LTransport {
      * @param {Object} appConfig 
      */
     validatePayload(appConfig) {
-      let payload = '';
+      const payload = schema.validate(appConfig, schema.Schema);
+      if(payload.error) throw new Error('A vaidation error occured');
 
-      switch(appConfig.scope) {
-          case 'slack' :
-            payload = joi.validate(appConfig, schema.slackSchema);
-            return payload.value;
-          case 'default' :
-            payload = joi.validate(appConfig, schema.Schema);
-            break;
-          default:
-            throw new Error('Scope not recognized..Enter a valid scope')
+      if(appConfig.slack) {
+        console.log('here')
+        return payload.value;
       }
-
-      if(payload.error) {
-        throw new Error(payload.error);
-      }
-      else{
+      else {
         if(payload.value.file === true) {
-          payload.value.logDir = defaultConfig.logDir;
-        }
-        return this.createTransports(payload.value);
+              payload.value.logDir = defaultConfig.logDir;
+            }
+            return this.createTransports(payload.value);
       }
     }
 
@@ -45,6 +36,7 @@ class LTransport {
      * @param {param object} param 
      */
     createTransports(param) {
+      console.log('transports created');
       const filename = path.join(defaultConfig.logDir, 'info.log');
       const transportArray = [];
       transportArray.push(defaultConfig.transpotsLevelConfig);
@@ -59,12 +51,34 @@ class LTransport {
           format.timestamp({
             format: defaultConfig.timestampFormat
           }),
-          format.printf(info => `${info.timestamp} ${info.level}: ${JSON.stringify(info.message)}`)
+          format.printf(
+            info =>
+            `${info.level} [Timestamp: ${info.timestamp}]: ${info.message}`
+          )
         ),
         transports: transportArray
       });
 
       return logger;
+    }
+    
+
+    /**
+     * Configure transports based on selected level
+     * @param {Winston Transport} transport 
+     * @param {Object} config 
+     */
+    pushTransports(transport, config) {
+      const {message, level} = config;
+      
+      switch (level) {
+        case 'warn' :
+          return transport.warn(message);
+        case 'error': 
+          return transport.error(message);
+        default : 
+          return transport.info(message);
+      }
     }
 }
 

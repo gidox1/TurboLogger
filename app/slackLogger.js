@@ -1,33 +1,30 @@
 'use strict';
 
 const loggerSetUp = require('./loggerSetUp');
-const colorObject = require('./config').slackColors;
+const config = require('./config');
 const request = require('request');
 const requestConfig = require('./config').requestConfig;
 
 
 class SlackLogger {
 
-    constructor(appConfig) {
-        this.appConfig = appConfig;
-    }
-
-
     /**
      * Recieves message and context from the logger method
      * @param {object} message 
-     * @param {string} context
+     * @param {string} payload
      */
-    slack(message, context) {
+    slack(message, payload) {
+        console.log('within slack logger')
         const log = new loggerSetUp();
-        const obj = this.appConfig
-        const validatedPayload = log.validatePayload(obj);
-        const stringifiedMessage = JSON.stringify(message); 
+        const validatedPayload = log.validatePayload(payload);
+        const stringifiedMessage = JSON.stringify(message);
         const {method,contentType,json} = requestConfig;
-
+        const colorObject = config.slackColors;
+        const context = payload.slack.context ? payload.slack.context : payload.slack.context = config.deaultContext;
+        
         for(var key in colorObject) {
             if (key == context) {
-                validatedPayload.color = key;
+                validatedPayload.color = colorObject[key];
             }
         }
 
@@ -39,10 +36,12 @@ class SlackLogger {
                 color: `${validatedPayload.color}`
             }]
         }
-        const options = {url: validatedPayload.webhook_url, body: slackBody, method, contentType, json}
+        const options = {url: validatedPayload.slack.webhook_url, body: slackBody, method, contentType, json}
+        console.log('making request now')
           
         return request(options, (err, res) => {
-            if(err) {throw new Error('Error occured while making reuest');}
+            if(err) {console.log(err); throw new Error('Error occured while making reuest');}
+            console.log('body',res.body)
             return res.body;
           })              
     }
