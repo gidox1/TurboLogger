@@ -4,12 +4,7 @@ const loggerSetUp = require('./loggerSetUp.js');
 const SlackStream = require('./slackLogger');
 const setUp = new loggerSetUp();
 
-class Logger {
-
-    constructor(appConfig) {
-        this.appConfig = appConfig;
-    }
-
+class LoggerUtils {
 
     /**
      * Logs to file, Console and Slack
@@ -24,25 +19,6 @@ class Logger {
             return this.consoleLogger(message, appConfig);
         }
     }
-
-
-
-    /**
-     * External Endpoint for the logger
-     * @param {String} message 
-     */
-    log(message) {
-        if(this.appConfig.file == true && this.appConfig.slack) {
-            return  this.hybridLogger(message, this.appConfig);
-        }
-        else if (this.appConfig.slack) {
-            return  this.logSlack(message, this.appConfig);
-        }
-        else {
-            return this.consoleLogger(message, this.appConfig)
-        }
-    }
-
 
 
     /**
@@ -76,6 +52,31 @@ class Logger {
     logSlack(message, appConfig) {
         const slackLogger = new SlackStream();
         return  slackLogger.slack(message, appConfig)
+    }
+}
+
+class Logger {
+
+    constructor(appConfig) {
+        this.appConfig = appConfig;
+    }
+
+    /**
+     * External Endpoint for the logger
+     * @param {String} message 
+     */
+    log(message) {
+        const utils = new LoggerUtils()
+
+        if(this.appConfig.file == true && this.appConfig.slack) {
+            return  utils.hybridLogger(message, this.appConfig);
+        }
+        else if (this.appConfig.slack) {
+            return  utils.logSlack(message, this.appConfig);
+        }
+        else {
+            return utils.consoleLogger(message, this.appConfig)
+        }
     }
 }
 
