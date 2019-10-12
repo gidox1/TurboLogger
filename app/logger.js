@@ -1,7 +1,8 @@
 'use strict';
 
 const loggerSetUp = require('./loggerSetUp.js');
-const slack = require('./slackLogger');
+const SlackStream = require('./slackLogger');
+const setUp = new loggerSetUp();
 
 class Logger {
 
@@ -9,22 +10,78 @@ class Logger {
         this.appConfig = appConfig;
     }
 
-    log() {
-        return this.setUpWinston(this.appConfig);
+
+    /**
+     * Logs to file, Console and Slack
+     * @param {String} message 
+     * @param {Object} appConfig 
+     */
+    hybridLogger(message, appConfig) {
+        const callBack =  this.logSlack(message, appConfig);
+
+        if(callBack) {
+            delete appConfig.slack;
+            return this.consoleLogger(message, appConfig);
+        }
     }
 
+
+
+    /**
+     * External Endpoint for the logger
+     * @param {String} message 
+     */
+    log(message) {
+        if(this.appConfig.file == true && this.appConfig.slack) {
+            return  this.hybridLogger(message, this.appConfig);
+        }
+        else if (this.appConfig.slack) {
+            return  this.logSlack(message, this.appConfig);
+        }
+        else {
+            return this.consoleLogger(message, this.appConfig)
+        }
+    }
+
+
+
+    /**
+     * Set up winston with the app Config
+     * @param {Object} appConfig 
+     */
     setUpWinston(appConfig) {
-        const setUp = new loggerSetUp();
-        return setUp.validatePayload(appConfig);
+        return  setUp.validatePayload(appConfig);
+    }
+
+
+
+    /**
+     * Set up console transports
+     * @param {String} message 
+     * @param {Object} appConfig 
+     */
+    consoleLogger(message, appConfig) {
+        const transport = this.setUpWinston(appConfig);
+        const level = appConfig.level;
+        const config = {level, message};
+        return setUp.pushTransports(transport, config);
+    }
+
+
+    /**
+     * Set up Slack logger
+     * @param {String} message 
+     * @param {Object} appConfig 
+     */
+    logSlack(message, appConfig) {
+        const slackLogger = new SlackStream();
+        return  slackLogger.slack(message, appConfig)
     }
 }
 
+
 module.exports = {
     createStream: function (appConfig) {
-        return new Logger(appConfig);
-    },
-
-    slackStream: function (appConfig) {
-        return new slack(appConfig);
+            return new Logger(appConfig);
     }
 }

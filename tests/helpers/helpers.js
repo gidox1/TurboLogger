@@ -3,19 +3,33 @@
 
 class DataFactory {
 
-    static getDefaultScopePayload = () => {
-        return {
-                scope: 'default',
-                level: 'info',
-                file: true,
+    static getConfigForSlack = () => {
+            return  {
+                "level": "info",
+                "slack": {
+                    webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+                    channel: 'passionapi',
+                    context: 'info'
+                }
         }
     }
 
-    static getSlackScopePayload = () => {
+    static getConfigForConsole = () => {
         return {
-                scope: 'slack',
-                webhook_url : `https://hooks.slack.com/services/${process.env.SECRET}`,
-                channel: 'test_channel'
+            "level": "info",
+            "file": true
+        }
+    }
+
+    static getConfigForHybrid = () => {
+        return {
+            "level": "info",
+            "file": true,
+            "slack": {
+                webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+                channel: 'passionapi',
+                context: 'info'
+            }
         }
     }
 }
