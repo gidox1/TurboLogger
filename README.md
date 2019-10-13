@@ -39,7 +39,8 @@ Console and file logger for Node.js Applications
         turboLogger.log('hello world'); //returns the said message to Slack and also the console.
      ```
         
-     - To log to file, simply set ```file: false``` and remove the ```slack``` object, leaving just the ```level``` and the ```file``` properties. This will log only to file and console.
+     - To log to file, simply set ```file: true``` and remove the ```slack``` object, leaving just the ```level``` and the ```file``` properties. This will log only to file and console.
+    
     
   - Hybrid Logger
     - The hybrid Logger comprises of all three levels; console, file and slack. 
