@@ -39,9 +39,15 @@ class SlackLogger {
           
         return request(options, (err, res) => {
             if(err) {console.log(err); throw new Error('Error occured while making reuest');}
+            
+            if (payload.file != true && payload.console == true) {
+                delete payload.slack;
+                require('./logger').createStream(payload).log(message);
+            }
             return res.body;
           })              
     }
+    
 }
 
 module.exports = SlackLogger

@@ -26,7 +26,14 @@ const defaultConfig = {
     logDir: 'fileLog',
     transpotsLevelConfig : new transports.Console({
         level: 'info',
-        json: true
+        format: format.combine(
+            format.colorize(),
+            format.printf(
+              info =>
+                `${info.level} [Timestamp: ${info.timestamp}]: ${JSON.stringify(info.message)}`
+            )
+          ),
+        json: true,
     }),
     
 }

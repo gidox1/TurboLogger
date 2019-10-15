@@ -1,8 +1,7 @@
 'use strict';
 
-const { createLogger, format, transports } = require('winston');
+const {format, transports } = require('winston');
 const winston = require('winston')
-const joi = require('@hapi/joi');
 const defaultConfig = require('./config');
 const schema = require('./validator').Schema;
 const path = require('path');
@@ -37,7 +36,10 @@ class LTransport {
     createTransports(param) {
       const filename = path.join(defaultConfig.logDir, 'info.log');
       const transportArray = [];
-      transportArray.push(defaultConfig.transpotsLevelConfig);
+
+      if(param.console == true) {
+         transportArray.push(defaultConfig.transpotsLevelConfig);
+      }
 
       if(param.file == true) {
           transportArray.push(new transports.File({ filename }))
