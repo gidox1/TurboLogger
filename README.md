@@ -53,6 +53,7 @@ Console and file logger for Node.js Applications
       const config = {
                 "level": "info",
                 "file": true,
+                "console": true,
                 "slack": {
                     webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
                     channel: 'passionapi',
