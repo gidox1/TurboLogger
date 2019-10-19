@@ -21,9 +21,9 @@ Console and file logger for Node.js Applications
     
     turboLogger.log('hello world'); // returns the said message to whatever medium specified in the config with a context of ```info``` (returns a green color).
     turboLogger.warn('hello world');// returns the said message to whatever medium specified in the config with a context of ```warn``` (returns a yellow color).
-    turboLogger.warn('hello world'); // returns the said message to whatever medium specified in the config with a context of ```error``` (returns a red color).
+    turboLogger.error('hello world'); // returns the said message to whatever medium specified in the config with a context of ```error``` (returns a red color).
 
-    By default, ```info``` is our level.
+    By default, info is our level.
     
     ```
 
