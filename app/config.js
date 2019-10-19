@@ -3,7 +3,11 @@ const path = require('path');
 const {format, transports, } = require('winston');
 
 const defaultConfig = {
-    level: 'info',
+    level: {
+        info: 'info',
+        warn: 'warn',
+        error: 'error'
+    },
     slack: false,
     deaultContext: 'info',
     slackColors : {
@@ -35,7 +39,7 @@ const defaultConfig = {
           ),
         json: true,
     }),
-    
+    validationErrorMessage: 'A validation error occured'
 }
 
 module.exports = defaultConfig;

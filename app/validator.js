@@ -7,6 +7,7 @@ const Schema = joi.object({
     appLabel: joi.boolean().optional(),
     colorize: joi.boolean().optional(),
     console: joi.boolean().required(),
+    context: joi.string().optional(),
     slack: joi.object({
         webhook_url: joi.string().required(),
         channel: joi.string().required(),

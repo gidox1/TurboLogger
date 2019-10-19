@@ -19,8 +19,10 @@ Console and file logger for Node.js Applications
         }
     const turboLogger = require('turbo-logger').createStream(config);
     
-    turboLogger.log('hello world'); //returns the said message to whatever medium specified in the config.
-    The level property could also have the value of ```error``` (returns a red color) or ```warn```(returns a yellow color) which means error and warning rspectively.
+    turboLogger.log('hello world'); // returns the said message to whatever medium specified in the config with a context of ```info``` (returns a green color).
+    turboLogger.warn('hello world');// returns the said message to whatever medium specified in the config with a context of ```warn``` (returns a yellow color).
+    turboLogger.warn('hello world'); // returns the said message to whatever medium specified in the config with a context of ```error``` (returns a red color).
+
     By default, ```info``` is our level.
     
     ```
@@ -62,7 +64,9 @@ Console and file logger for Node.js Applications
             }
       
       const turboLogger = require('turbo-logger').createStream(config);
-      turboLogger.log('hello world'); //This logs the message to file, console and slack.
+      turboLogger.warn('Warning message'); //This logs the message to file, console and slack.
       ```
+
+      
   - License
       - MIT

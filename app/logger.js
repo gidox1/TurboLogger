@@ -1,59 +1,8 @@
 'use strict';
+const config = require('./config')
+const LoggerUtils = require('./loggerUtils');
+const utils = new LoggerUtils();
 
-const loggerSetUp = require('./loggerSetUp.js');
-const SlackStream = require('./slackLogger');
-const setUp = new loggerSetUp();
-
-class LoggerUtils {
-
-    /**
-     * Logs to file, Console and Slack
-     * @param {String} message 
-     * @param {Object} appConfig 
-     */
-    hybridLogger(message, appConfig) {
-        const callBack =  this.logSlack(message, appConfig);
-
-        if(callBack) {
-            delete appConfig.slack;
-            return this.consoleLogger(message, appConfig);
-        }
-    }
-
-
-    /**
-     * Set up winston with the app Config
-     * @param {Object} appConfig 
-     */
-    setUpWinston(appConfig) {
-        return  setUp.validatePayload(appConfig);
-    }
-
-
-
-    /**
-     * Set up console transports
-     * @param {String} message 
-     * @param {Object} appConfig 
-     */
-    consoleLogger(message, appConfig) {
-        const transport = this.setUpWinston(appConfig);
-        const level = appConfig.level;
-        const config = {level, message};
-        return setUp.pushTransports(transport, config);
-    }
-
-
-    /**
-     * Set up Slack logger
-     * @param {String} message 
-     * @param {Object} appConfig 
-     */
-    logSlack(message, appConfig) {
-        const slackLogger = new SlackStream();
-        return  slackLogger.slack(message, appConfig)
-    }
-}
 
 class Logger {
 
@@ -61,23 +10,42 @@ class Logger {
         this.appConfig = appConfig;
     }
 
+
     /**
      * External Endpoint for the logger
      * @param {String} message 
      */
     log(message) {
-        const utils = new LoggerUtils()
+        const appConfig = this.appConfig;
+        appConfig.level = config.level.info;
+        appConfig.context = config.level.info;
+        return utils.pipeStream(appConfig, message);
+    }
 
-        if(this.appConfig.file == true && this.appConfig.slack) {
-            return  utils.hybridLogger(message, this.appConfig);
-        }
-        else if(this.appConfig.hasOwnProperty('slack')) {
-            return utils.logSlack(message, this.appConfig)
-        }
-        else {
-            this.appConfig.console = true;
-            return utils.consoleLogger(message, this.appConfig)
-        }
+
+
+    /**
+     * External Endpoint for the logger
+     * @param {String} message 
+     */
+    error(message) {
+        const appConfig = this.appConfig;
+        appConfig.level = config.level.error;
+        appConfig.context = config.level.error;
+        return utils.pipeStream(appConfig, message);
+    }
+
+
+
+    /**
+     * External Endpoint for the logger
+     * @param {String} message 
+     */
+    warn(message) {
+        const appConfig = this.appConfig;
+        appConfig.level = config.level.warn;
+        appConfig.context = config.level.warn;
+        return utils.pipeStream(appConfig, message);
     }
 }
 
@@ -85,10 +53,15 @@ class Logger {
 module.exports = {
 
     /**
-     * The external endpoint
+     * Creates logger stream
      * @param {Object} appConfig 
      */
     createStream: function (appConfig) {
-            return new Logger(appConfig);
+        const validator = utils.validatePayload(appConfig);
+        if(validator.error){
+            console.log('\n', config.validationErrorMessage + ': ', validator.error.details, '\n');
+            return false;
+        }  
+        return new Logger(appConfig);  
     }
 }
