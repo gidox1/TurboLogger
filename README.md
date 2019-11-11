@@ -46,8 +46,7 @@ Console and file logger for Node.js Applications
 
 
   - Single Logger
-    - To log to Slack only, add an env parameter, whether prod, dev or create a custom with ```slack``` as the only value specified in the arrray. This sends the messgage to the provided slack channel in the config alone, if the config object doesn't have the required slack parameters, it will throw an error. Within the slack object in the config, ```webhook_url```, and ```channel``` are required. To use this Slack log, you need to create a slack app and also create an incoming webhook_url through which request will be forwarded to Slack. For more details check out [this brilliant guide](https://api.slack.com/apps). The logger is set up the same way.
-
+    - To log to Slack only, add an env parameter, whether prod, dev or create a custom with ```slack``` as the only value specified in the arrray. This sends the message to the provided slack channel in the config alone, if the config object doesn't have the required slack parameters, it will throw an error. Within the slack object in the config, ```webhook_url```, and ```channel``` are required. To use this Slack log, you need to create a slack app and also create an incoming webhook_url through which request will be forwarded to Slack. For more details check out [this brilliant guide](https://api.slack.com/apps).
     ```node
         const config = {
                 "slack": {
