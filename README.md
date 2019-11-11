@@ -31,9 +31,9 @@ Console and file logger for Node.js Applications
     }
     
     const turboLogger = require('turbo-logger').createStream(config);
-turboLogger.log('hello world', env.prod); // returns the said message to console and slack with a context of ```info``` (returns a green color).
-turboLogger.warn('hello world', env.myCustomConfig);// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
-turboLogger.error('hello world', env.dev); // returns the said message to file and console with a context of ```error``` (returns a red color).
+  turboLogger.log('hello world', env.prod); // returns the said message to console and slack with a context of ```info``` (returns a green color).
+  turboLogger.warn('hello world', env.myCustomConfig);// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
+  turboLogger.error('hello world', env.dev); // returns the said message to file and console with a context of ```error``` (returns a red color).
 
   ```
   - You need to initialize the logger with the slack config if you plan on logging to Slack. If you don't want to log to    slack, you just pass an empty object 
