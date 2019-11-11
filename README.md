@@ -15,26 +15,34 @@ Console and file logger for Node.js Applications
   - Configurable through env. (You can set the context, whether production, dev or create a custom context of your choice)
   
 ## Usage
-    ```node
+
+  ```node
     const config = {
-            "slack": {
-                webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
-                channel: 'passionapi',
-            }
+        "slack": {
+            webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+            channel: 'passionapi',
         }
+    }
+    
     const env = {
-      prod: ['console', 'slack'],
-      dev: ['file', 'console'],
-      myCustomConfig: ['console']
+        prod: ['console', 'slack'],
+        dev: ['file', 'console'],
+        myCustomConfig: ['console']
     }
     
     const turboLogger = require('turbo-logger').createStream(config);
-    
-    turboLogger.log('hello world', env.prod); // returns the said message to console and slack with a context of ```info``` (returns a green color).
-    turboLogger.warn('hello world', env.myCustomConfig);// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
-    turboLogger.error('hello world', env.dev); // returns the said message to file and console with a context of ```error``` (returns a red color).
-    
-    ```
+turboLogger.log('hello world', env.prod); // returns the said message to console and slack with a context of ```info``` (returns a green color).
+turboLogger.warn('hello world', env.myCustomConfig);// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
+turboLogger.error('hello world', env.dev); // returns the said message to file and console with a context of ```error``` (returns a red color).
+
+  ```
+  - You need to initialize the logger with the slack config if you plan on logging to Slack. If you don't want to log to    slack, you just pass an empty object 
+
+  ```node
+  const config = {};
+  const turboLogger = require('turbo-logger').createStream(config);
+
+  ```
 
 
   - Single Logger
