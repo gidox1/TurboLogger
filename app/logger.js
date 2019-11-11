@@ -15,11 +15,14 @@ class Logger {
      * External Endpoint for the logger
      * @param {String} message 
      */
-    log(message) {
+    log(message, env) {
         const appConfig = this.appConfig;
         appConfig.level = config.level.info;
         appConfig.context = config.level.info;
-        return utils.pipeStream(appConfig, message);
+        if(utils.checkENV(env) === false){
+            appConfig.console = true;
+        }
+        return utils.pipeStream(appConfig, message, env);
     }
 
 
@@ -28,11 +31,14 @@ class Logger {
      * External Endpoint for the logger
      * @param {String} message 
      */
-    error(message) {
+    error(message, env) {
         const appConfig = this.appConfig;
         appConfig.level = config.level.error;
         appConfig.context = config.level.error;
-        return utils.pipeStream(appConfig, message);
+        if(utils.checkENV(env) === false){
+            appConfig.console = true;
+        }
+        return utils.pipeStream(appConfig, message, env);
     }
 
 
@@ -41,11 +47,14 @@ class Logger {
      * External Endpoint for the logger
      * @param {String} message 
      */
-    warn(message) {
+    warn(message, env) {
         const appConfig = this.appConfig;
         appConfig.level = config.level.warn;
         appConfig.context = config.level.warn;
-        return utils.pipeStream(appConfig, message);
+        if(utils.checkENV(env) === false){
+            appConfig.console = true;
+        }
+        return utils.pipeStream(appConfig, message, env);
     }
 }
 
@@ -57,7 +66,10 @@ module.exports = {
      * @param {Object} appConfig 
      */
     createStream: function (appConfig) {
-        const validator = utils.validatePayload(appConfig);
+        let validator = {}; 
+        if(appConfig.hasOwnProperty('slack')) {
+            validator = utils.validatePayload(appConfig);
+        }
         if(validator.error){
             console.log('\n', config.validationErrorMessage + ': ', validator.error.details, '\n');
             return false;

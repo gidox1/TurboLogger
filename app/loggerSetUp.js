@@ -12,21 +12,16 @@ class LTransport {
    * @param {param object} param 
    */
   createTransports(param) {
-
-    if(param.file === true) {
-        param.logDir = defaultConfig.logDir;
-    }
     const filename = path.join(defaultConfig.logDir, 'info.log');
     const transportArray = [];
-
     if(param.console == true) {
         transportArray.push(defaultConfig.transpotsLevelConfig);
     }
 
     if(param.file == true) {
-        transportArray.push(new transports.File({ filename }))
+      param.logDir = defaultConfig.logDir;
+      transportArray.push(new transports.File({ filename }))
     }
-
     const logger = winston.createLogger({
       format: winston.format.json(),
       format: format.combine(
@@ -53,7 +48,7 @@ class LTransport {
    */
   pushTransports(transport, config) {
     const {message, level} = config;
-
+    
     switch (level) {
       case 'warn' :
         return transport.warn(message);

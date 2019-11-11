@@ -16,8 +16,7 @@ class LoggerUtils {
      */
     hybridLogger(message, appConfig) {
         const callBack =  this.logSlack(message, appConfig);
-
-        if(callBack) {
+        if(callBack && (appConfig.console || appConfig.file)) {
             delete appConfig.slack;
             return this.logLevelSetUp(message, appConfig);
         }
@@ -30,20 +29,18 @@ class LoggerUtils {
      * @param {Object} appConfig 
      */
     logLevelSetUp(message, appConfig) {
-        let transport = '';
-        if(!appConfig.slack) {
-            transport = setUp.createTransports(appConfig);
-        }
+        let transport;
         const level = appConfig.level;
         const config = {level, message};
+        transport = setUp.createTransports(appConfig);
         return setUp.pushTransports(transport, config);
     }
 
 
     /**
      * Set up Slack logger
-     * @param {String} message 
-     * @param {Object} appConfig 
+     * @param {String} message
+     * @param {Object} appConfig
      */
     logSlack(message, appConfig) {
         const slackLogger = new SlackStream();
@@ -55,20 +52,63 @@ class LoggerUtils {
      * Pipes config to Endpoint for the logger
      * @param {String} message 
      */
-    pipeStream(appConfig, message) {
-        if(appConfig.file == true && appConfig.slack) {
-            return  this.hybridLogger(message, appConfig);
+    pipeStream(appConfig, message, env) {
+        let obj = Object.assign({}, env)
+        let keys = {};
+        this.slackValidator(appConfig, env);
+
+        for (const [key, value] of Object.entries(obj)) {
+            keys[value] = value;
+            if(value == 'slack' && appConfig.slack){
+                appConfig[value] = appConfig.slack;
+            }
+            else {
+                appConfig[value] = true;
+            }
         }
-        else if(appConfig.hasOwnProperty('slack')) {
-            return this.logSlack(message, appConfig)
-        }
-        else if(appConfig.file == true ) {
-            return this.logLevelSetUp(message, appConfig);
+        if(this.matchLogger(appConfig, keys)) {
+            return this.hybridLogger(message, appConfig)
         }
         else {
-            appConfig.console = true;
-            return this.logLevelSetUp(message, appConfig)
+            return this.logLevelSetUp(message, appConfig);
         }
+    }
+
+
+    /**
+     * @param {Object} payload 
+     * @param {Object} obj 
+     */
+    matchLogger(payload, keys) {
+        let bool;
+        (payload.slack && keys.slack) ? bool = true : bool =false;
+        return bool
+    }
+
+
+    /**
+     * 
+     * @param {Object} payload 
+     * @param {Object} envConfig 
+     */
+    slackValidator(payload, envArray){
+        return envArray.map(value => {
+            if(!payload.slack && value == 'slack') {
+                throw Error('Please set Slack config');
+            }
+        })
+    }
+
+
+    /**
+     * Check if env is empty or undefined
+     * @param {Arrray} env 
+     */
+    checkENV(env){
+        if(env.length == 0 || env === undefined || env[0] == '') {
+            return false;
+        }
+        return true;
     }
 
 
