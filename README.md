@@ -12,7 +12,7 @@ Console and file logger for Node.js Applications
   - Logging to file
   - Ability to log to different levels (error, info, warn)
   - Single and Hybrid Logger (Ability to log to one or multiple sources).
-  - Configurable through env. (You can set the context, whether production, dev or create a custom context of your choice)
+  - Configurable through env. (You can set the context, whether production, dev or create a custom context of your choice).
   
 ## Usage
 
