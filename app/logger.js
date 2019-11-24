@@ -48,8 +48,12 @@ module.exports = {
      * @param {Object} appConfig 
      */
     createStream: function (appConfig) {
+        if (appConfig == null || appConfig == undefined) {
+            throw new Error('Please initialize logger with config object')
+        } 
+        
         let validator = {}; 
-        if(appConfig.hasOwnProperty('slack')) {
+        if(appConfig && appConfig.hasOwnProperty('slack')) {
             validator = utils.validatePayload(appConfig);
         }
         if(validator.error){
