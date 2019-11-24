@@ -23,7 +23,9 @@ class LTransport {
       transportArray.push(new transports.File({ filename }))
     }
 
-    (!param.console && !param.file) ? transportArray.push(defaultConfig.transpotsLevelConfig) : param.console = false;
+    (!param.console && !param.file) ? 
+      transportArray.push(defaultConfig.transpotsLevelConfig) 
+        : param.console = false;
     
     const logger = winston.createLogger({
       format: winston.format.json(),

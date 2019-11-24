@@ -16,13 +16,7 @@ class Logger {
      * @param {String} message 
      */
     log(message, env) {
-        const appConfig = this.appConfig;
-        appConfig.level = config.level.info;
-        appConfig.context = config.level.info;
-        if(utils.checkENV(env) === false){
-            appConfig.console = true;
-        }
-        return utils.pipeStream(appConfig, message, env);
+        return utils.formatMethod(this.appConfig, env, config.scope.info, message);
     }
 
 
@@ -32,13 +26,7 @@ class Logger {
      * @param {String} message 
      */
     error(message, env) {
-        const appConfig = this.appConfig;
-        appConfig.level = config.level.error;
-        appConfig.context = config.level.error;
-        if(utils.checkENV(env) === false){
-            appConfig.console = true;
-        }
-        return utils.pipeStream(appConfig, message, env);
+        return utils.formatMethod(this.appConfig, env, config.scope.error, message)
     }
 
 
@@ -48,13 +36,7 @@ class Logger {
      * @param {String} message 
      */
     warn(message, env) {
-        const appConfig = this.appConfig;
-        appConfig.level = config.level.warn;
-        appConfig.context = config.level.warn;
-        if(utils.checkENV(env) === false){
-            appConfig.console = true;
-        }
-        return utils.pipeStream(appConfig, message, env);
+        return utils.formatMethod(this.appConfig, env, config.scope.warn, message);
     }
 }
 

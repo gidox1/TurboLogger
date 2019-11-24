@@ -5,6 +5,7 @@ const loggerSetUp = require('./loggerSetUp');
 const SlackStream = require('./slackLogger');
 const setUp = new loggerSetUp();
 const schema = require('./validator').Schema;
+const config = require('./config');
 
 
 class LoggerUtils {
@@ -119,6 +120,23 @@ class LoggerUtils {
    validatePayload(appConfig) {
        return schema.validate(appConfig, schema.Schema);
   }
+
+
+  /**
+   * 
+   * @param {Object} appConfig 
+   * @param {Array} env 
+   * @param {String} scope 
+   * @param {String} message 
+   */
+    formatMethod(appConfig, env, scope, message) {
+        appConfig.level = config.level[scope];
+        appConfig.context = config.level[scope];
+        if(this.checkENV(env) === false){
+            appConfig.console = true;
+        }
+        return this.pipeStream(appConfig, message, env);
+    }
 }
 
 module.exports = LoggerUtils;

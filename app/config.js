@@ -8,6 +8,11 @@ const defaultConfig = {
         warn: 'warn',
         error: 'error'
     },
+    scope: {
+        info: 'info',
+        warn: 'warn',
+        error: 'error' 
+    },
     slack: false,
     deaultContext: 'info',
     slackColors : {
