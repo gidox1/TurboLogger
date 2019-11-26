@@ -57,8 +57,8 @@ class LoggerUtils {
         let obj = Object.assign({}, env)
         let keys = {};
         this.slackValidator(appConfig, env);
-
-        for (const [key, value] of Object.entries(obj)) {
+        const entries = Object.entries(obj)
+        for (const [key, value] of entries) {
             keys[value] = value;
             if(value == 'slack' && appConfig.slack){
                 appConfig[value] = appConfig.slack;
@@ -81,9 +81,7 @@ class LoggerUtils {
      * @param {Object} obj 
      */
     matchLogger(payload, keys) {
-        let bool;
-        (payload.slack && keys.slack) ? bool = true : bool =false;
-        return bool
+        return (payload.slack && keys.slack)
     }
 
 

@@ -30,17 +30,17 @@ Console and file logger for Node.js Applications
         myCustomConfig: ['console']
     }
     
-    const turboLogger = require('turbo-logger').createStream(config);
-    turboLogger.log('hello world', env.prod); // returns the said message to console and slack with a context of ```info``` (returns a green color).
-    turboLogger.warn('hello world', env.myCustomConfig);// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
-    turboLogger.error('hello world', env.dev); // returns the said message to file and console with a context of ```error``` (returns a red color).
+    const turboLogger = require('turbo-logger').createStream(config, env.prod);
+    turboLogger.log('hello world'); // returns the said message to console and slack with a context of ```info``` (returns a green color).
+    turboLogger.warn('hello world');// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
+    turboLogger.error('hello world'); // returns the said message to file and console with a context of ```error``` (returns a red color).
 
   ```
   - You need to initialize the logger with the slack config if you plan on logging to Slack. If you don't want to log to    slack, you just pass an empty object 
 
   ```node
   const config = {};
-  const turboLogger = require('turbo-logger').createStream(config);
+  const turboLogger = require('turbo-logger').createStream(config); // env will default to logging to console.
 
   ```
 
@@ -59,8 +59,8 @@ Console and file logger for Node.js Applications
             dev: ['file', 'console'],
             myCustomConfig: ['slack']
         };
-        const turboLogger = require('turbo-logger').createStream(config);
-        turboLogger.log('hello world', env.myCustomConfig); //sends the said message to the Slack channel
+        const turboLogger = require('turbo-logger').createStream(config, env.myCustomConfig);
+        turboLogger.log('hello world'); //sends this message to a Slack channel
         
      ```
         
@@ -82,8 +82,8 @@ Console and file logger for Node.js Applications
             dev: ['file', 'console'],
             myCustomConfig: ['slack']
         };
-        const turboLogger = require('turbo-logger').createStream(config);
-        turboLogger.log('hello world', env.prod); //sends the said message to all contexts (console, slack and file).
+        const turboLogger = require('turbo-logger').createStream(config, env.prod);
+        turboLogger.log('hello world'); //sends the said message to all contexts (console, slack and file).
         
      ```
       
