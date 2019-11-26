@@ -35,8 +35,9 @@ class SlackLogger {
         
         const options = {url: payload.slack.webhook_url, body: slackBody, method, contentType, json}
           
+        // Exit gracefully, don't crash the service
         return request(options, (err, res) => {
-            if(err) {console.log(err); throw new Error('Error occured while making reuest');}
+            if(err) { return }
             return res.body;
           })              
     }
