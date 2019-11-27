@@ -3,7 +3,6 @@ const config = require('./config')
 const LoggerUtils = require('./loggerUtils');
 let utils = null
 
-
 class Logger {
 
     constructor(appConfig, env) {
@@ -55,6 +54,7 @@ module.exports = {
         } 
         
         if(appConfig && appConfig.hasOwnProperty('slack')) {
+            let utils = new LoggerUtils();
             const validator = utils.validatePayload(appConfig);
             if(validator.error){
                 throw new Error('\n', config.validationErrorMessage + ': ', validator.error.details, '\n');
