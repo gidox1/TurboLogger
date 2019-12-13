@@ -13,6 +13,7 @@ Console and file logger for Node.js Applications
   - Ability to log to different levels (error, info, warn)
   - Single and Hybrid Logger (Ability to log to one or multiple sources).
   - Configurable through env. (You can set the context, whether production, dev or create a custom context of your choice).
+  - Log comma-separated messages
   
 ## Usage
 
@@ -86,7 +87,30 @@ Console and file logger for Node.js Applications
         turboLogger.log('hello world'); //sends the said message to all contexts (console, slack and file).
         
      ```
-      
+  - Logging multiple messages
+    - Turbo-logger allows you log comma-separated messages. For example;
+    
+      ```node
+        const config = {
+                "slack": {
+                    webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+                    channel: 'passionapi',
+                }
+            };
+        const env = {
+            prod: ['console', 'slack', 'file'],
+            dev: ['file', 'console'],
+            myCustomConfig: ['slack']
+        };
+        const turboLogger = require('turbo-logger').createStream(config, env.prod);
+        turboLogger.log('My config object : ', config); //
+    ```
+  The console prints: <img width="982" alt="Screenshot 2019-12-13 at 10 14 42 AM" src="https://user-images.githubusercontent.com/16461858/70788550-6af31380-1d91-11ea-8958-caadcefa20dc.png">
+
+  You can log as many comma-separated messages as you want.
+
+
+
   - License
       - MIT
       
