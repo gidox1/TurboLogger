@@ -16,8 +16,8 @@ class Logger {
      * External Endpoint for the logger
      * @param {String} message 
      */
-    log(message) {
-        return utils.formatMethod(this.appConfig, this.env, config.scope.info, message);
+    log(...message) {
+        return utils.formatMethod(this.appConfig, this.env, config.scope.info, ...message);
     }
 
 
@@ -26,8 +26,8 @@ class Logger {
      * External Endpoint for the logger
      * @param {String} message 
      */
-    error(message) {
-        return utils.formatMethod(this.appConfig, this.env, config.scope.error, message)
+    error(...message) {
+        return utils.formatMethod(this.appConfig, this.env, config.scope.error, ...message)
     }
 
 
@@ -36,8 +36,8 @@ class Logger {
      * External Endpoint for the logger
      * @param {String} message 
      */
-    warn(message) {
-        return utils.formatMethod(this.appConfig, this.env, config.scope.warn, message);
+    warn(...message) {
+        return utils.formatMethod(this.appConfig, this.env, config.scope.warn, ...message);
     }
 }
 
@@ -48,6 +48,7 @@ module.exports = {
      * Creates logger stream
      * @param {Object} appConfig 
      */
+    
     createStream: function (appConfig, env = null) {
         if (appConfig == null || appConfig == undefined) {
             throw new Error('Please initialize logger with config object')

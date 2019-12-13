@@ -35,7 +35,7 @@ class LTransport {
         }),
         format.printf(
           info =>
-          `${info.level} [Timestamp: ${info.timestamp}]: ${JSON.stringify(info.message)}`
+          `${info.level} [Timestamp: ${info.timestamp}]: ${info.message}`
         )
       ),
       transports: transportArray

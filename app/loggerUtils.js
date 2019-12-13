@@ -120,6 +120,27 @@ class LoggerUtils {
   }
 
 
+
+  /**
+   * Format all message passed to external endpoint
+   * @param  {...any} message 
+   */
+  buildMesaage(...message) {
+    let formattedMessage = '';
+    let messageArray = [...message];
+
+    messageArray[0].map(eachMessage => {
+        if(typeof eachMessage == 'object') {
+            formattedMessage = formattedMessage + JSON.stringify(eachMessage);
+        }
+        else{
+            formattedMessage = formattedMessage + eachMessage}
+    })
+
+    return formattedMessage;
+  }
+
+
   /**
    * 
    * @param {Object} appConfig 
@@ -127,13 +148,15 @@ class LoggerUtils {
    * @param {String} scope 
    * @param {String} message 
    */
-    formatMethod(appConfig, env, scope, message) {
+    formatMethod(appConfig, env, scope, ...message) {
+        const builtMessage = this.buildMesaage(message);
+        
         appConfig.level = config.level[scope];
         appConfig.context = config.level[scope];
         if(this.checkENV(env) === false){
             appConfig.console = true;
         }
-        return this.pipeStream(appConfig, message, env);
+        return this.pipeStream(appConfig, builtMessage, env);
     }
 }
 

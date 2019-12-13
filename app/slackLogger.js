@@ -13,7 +13,6 @@ class SlackLogger {
      * @param {string} payload
      */
     slack(message, payload) {
-        const stringifiedMessage = JSON.stringify(message);
         const {method,contentType,json} = requestConfig;
         const colorObject = config.slackColors;
         const context = payload.context
@@ -28,7 +27,7 @@ class SlackLogger {
             channel: `${payload.slack.channel}`,
             text: `<!channel> *SLack Logger Message*`,
             attachments: [{
-                text: `${stringifiedMessage}`,
+                text: `${message}`,
                 color: `${payload.color}`
             }]
         }
