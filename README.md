@@ -1,5 +1,5 @@
 # TurboLogger
-Console and file logger for Node.js Applications
+Console, file and Slack logger for Node.js Applications
 
 ## CONTENTS
   - Installation
