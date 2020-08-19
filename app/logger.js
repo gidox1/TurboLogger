@@ -50,7 +50,7 @@ module.exports = {
      */
     
     createStream: function (appConfig, env = null) {
-        if (!appConfig || !appConfig) {
+        if (!appConfig) {
             throw new Error('Please initialize logger with config object')
         } 
         
