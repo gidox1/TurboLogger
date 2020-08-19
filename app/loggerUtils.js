@@ -58,6 +58,7 @@ class LoggerUtils {
         let keys = {};
         this.slackValidator(appConfig, env);
         const entries = Object.entries(obj)
+
         for (const [key, value] of entries) {
             keys[value] = value;
             if(value == 'slack' && appConfig.slack){
@@ -104,7 +105,7 @@ class LoggerUtils {
      * @param {Arrray} env 
      */
     checkENV(env){
-        if(env.length == 0 || env === undefined || env[0] == '') {
+        if(!env.length || !env || env[0] == '') {
             return false;
         }
         return true;
@@ -133,8 +134,9 @@ class LoggerUtils {
         if(typeof eachMessage == 'object') {
             formattedMessage = formattedMessage + JSON.stringify(eachMessage);
         }
-        else{
-            formattedMessage = formattedMessage + eachMessage}
+        else {
+            formattedMessage = formattedMessage + eachMessage
+        }
     })
 
     return formattedMessage;
