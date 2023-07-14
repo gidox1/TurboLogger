@@ -1,6 +1,6 @@
 {
   "name": "turbo-logger",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Console, file and Slack logger for Node.js Applications",
   "main": "app/logger.js",
   "directories": {
