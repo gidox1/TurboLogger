@@ -140,7 +140,7 @@ TurboLogger is licensed under the MIT License.
 
       
  ## **Author**
- TurboLogger was created by [Gideon Odiase](https://api.slack.com/apps)..
+ TurboLogger was created by [Gideon Odiase](https://www.linkedin.com/in/gideon-odiase-07240313b/).
 
 
 
