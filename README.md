@@ -90,7 +90,7 @@ The hybrid logger combines multiple log levels. It could be a combination of all
 		logger.log('hello world'); // sends the message to all contexts (console, Slack, and file)
 ```
 
-###**Logging multiple messages**
+## **Logging multiple messages**
 TurboLogger allows you to log comma-separated messages. For example:
 ```node
 	turboLogger.log('My config object: ', config);
