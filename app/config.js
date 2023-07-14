@@ -24,9 +24,10 @@ const defaultConfig = {
         warn: 'warning'
     },
     requestConfig: {
-        method: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        json: true
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST'
     },
     file: false,
     appLabel: false,

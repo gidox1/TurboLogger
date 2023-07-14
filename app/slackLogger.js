@@ -1,9 +1,8 @@
 'use strict';
 
 const config = require('./config');
-const request = require('request');
 const requestConfig = require('./config').requestConfig;
-
+const axios = require('axios');
 
 class SlackLogger {
 
@@ -12,17 +11,16 @@ class SlackLogger {
      * @param {object} message 
      * @param {string} payload
      */
-    async slack(message, payload) {
-        const {method,contentType,json} = requestConfig;
+    async slack(message, payload) {    
         const colorObject = config.slackColors;
-        const context = payload.context
-
-        for(var key in colorObject) {
+        const context = payload.context;
+    
+        for (var key in colorObject) {
             if (key == context) {
                 payload.color = colorObject[key];
             }
         }
-
+    
         const slackBody = {
             channel: `${payload.slack.channel}`,
             text: `<!channel> *Turbo Logger: *`,
@@ -30,15 +28,21 @@ class SlackLogger {
                 text: `${message}`,
                 color: `${payload.color}`
             }]
+        };
+    
+        const options = {
+            method: requestConfig.method,
+            url: payload.slack.webhook_url,
+            data: slackBody,
+            headers: requestConfig.headers
+        };
+    
+        try {
+            await axios(options);
+        } catch (error) {
+            // Return null or handle the error gracefully
+            return null;
         }
-        
-        const options = {url: payload.slack.webhook_url, body: slackBody, method, contentType, json}
-          
-        // Exit gracefully, don't crash the service
-        return request(options, (err, res) => {
-            if(err) { return }
-            return res.body;
-          })              
     }
     
 }

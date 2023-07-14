@@ -58,7 +58,7 @@ module.exports = {
             let utils = new LoggerUtils();
             const validator = utils.validatePayload(appConfig);
             if(validator.error){
-                throw new Error('\n', config.validationErrorMessage + ': ', validator.error.details, '\n');
+                throw new Error(`${config.validationErrorMessage}: ${validator.error.details[0].message}`);
             }
         }
 
