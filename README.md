@@ -51,8 +51,8 @@ Install TurboLogger using npm:
   ```
 
 
-  ### **Single Logger**
-  To log only to Slack, set the environment parameter to "slack" and provide the required Slack configuration. Please note that in order to use this feature, you need to create a Slack app and obtain the necessary credentials.
+### **Single Logger**
+To log only to Slack, set the environment parameter to "slack" and provide the required Slack configuration. Please note that in order to use this feature, you need to create a Slack app and obtain the necessary credentials.
 
 Here's how to set up the Single Logger for Slack:
 
