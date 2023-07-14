@@ -22,7 +22,7 @@ Install TurboLogger using npm:
   ```node
     const config = {
         "slack": {
-            webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+            webhook_url: `${process.env.WEBHOOK_URL}`,
             channel: 'sample-channel',
         }
     }
@@ -66,7 +66,7 @@ Here's how to set up the Single Logger for Slack:
     ```node
         const config = {
             "slack": {
-                webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+                webhook_url: `${process.env.WEBHOOK_URL}`,
                 channel: 'sample-channel',
             }
         }
@@ -112,7 +112,7 @@ You can log to several Slack channels. The logger streams are configured separat
 	const errorChannelName = "error-logs";
 	const errorChannelConfig = {
 		"slack": {
-			webhook_url: `https://hooks.slack.com/services/${process.env.SLACK_ERROR_CHANNEL_WEBHOOK_URL}`,
+			webhook_url: `${process.env.SLACK_ERROR_CHANNEL_WEBHOOK_URL}`,
 			channel: errorChannelName,
 		}
 	};
@@ -121,7 +121,7 @@ You can log to several Slack channels. The logger streams are configured separat
 	const successChannelName = "success-logs";
 		const errorChannelConfig = {
 		"slack": {
-			webhook_url: `https://hooks.slack.com/services/${process.env.SLACK_SUCCESS_CHANNEL_WEBHOOK_URL}`,
+			webhook_url: `${process.env.SLACK_SUCCESS_CHANNEL_WEBHOOK_URL}`,
 			channel: successChannelName,
 		}
 	};
