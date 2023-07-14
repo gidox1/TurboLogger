@@ -12,7 +12,7 @@ class SlackLogger {
      * @param {object} message 
      * @param {string} payload
      */
-    slack(message, payload) {
+    async slack(message, payload) {
         const {method,contentType,json} = requestConfig;
         const colorObject = config.slackColors;
         const context = payload.context
@@ -25,7 +25,7 @@ class SlackLogger {
 
         const slackBody = {
             channel: `${payload.slack.channel}`,
-            text: `<!channel> *SLack Logger Message*`,
+            text: `<!channel> *Turbo Logger: *`,
             attachments: [{
                 text: `${message}`,
                 color: `${payload.color}`

@@ -1,19 +1,21 @@
 # TurboLogger
-Console, file and Slack logger for Node.js Applications
+TurboLogger is a versatile logging library for Node.js applications that supports logging to the console, file, and Slack channel. It provides configurable logging levels (error, info, warn), single and hybrid logging capabilities, and customizable logging contexts.
 
-## CONTENTS
-  - Installation
-    - ```npm i --save turbo-logger```
+## Installation
+Install TurboLogger using npm:
+```bash
+    npm i --save turbo-logger
+```
     
 ## FEATURE
   
   - Logging to Slack Channel
   - Console Logging
   - Logging to file
-  - Ability to log to different levels (error, info, warn)
-  - Single and Hybrid Logger (Ability to log to one or multiple sources).
-  - Configurable through env. (You can set the context, whether production, dev or create a custom context of your choice).
-  - Log comma-separated messages
+  - Support for different logging levels (error, info, warn)
+  - Single and Hybrid Logger (Ability to log to one or multiple sources)
+  - Configurable through environment variables (e.g., setting the context to production, development, or custom context)
+  - Ability to log comma-separated messages
   
 ## Usage
 
@@ -21,7 +23,7 @@ Console, file and Slack logger for Node.js Applications
     const config = {
         "slack": {
             webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
-            channel: 'passionapi',
+            channel: 'sample-channel',
         }
     }
     
@@ -31,88 +33,76 @@ Console, file and Slack logger for Node.js Applications
         myCustomConfig: ['console']
     }
     
-    const turboLogger = require('turbo-logger').createStream(config, env.prod);
-    turboLogger.log('hello world'); // returns the said message to console and slack with a context of ```info``` (returns a green color).
-    turboLogger.warn('hello world');// returns the said message to just the console config with a context of ```warn``` (returns a yellow color).
-    turboLogger.error('hello world'); // returns the said message to file and console with a context of ```error``` (returns a red color).
-
+    const logger = require('turbo-logger').createStream(config, env.prod);
   ```
-  - You need to initialize the logger with the slack config if you plan on logging to Slack. If you don't want to log to    slack, you just pass an empty object 
+  - Once the logger is initialized, you can use it to log messages:
 
   ```node
-  const config = {};
-  const turboLogger = require('turbo-logger').createStream(config); // env will default to logging to console.
+    logger.log('hello world'); // logs the message to the console and Slack with an "info" context
+    logger.warn('hello world'); // logs the message to the console with a "warn" context
+    logger.error('hello world'); // logs the message to a file and the console with an "error" context
+  ```
+
+  - You need to initialize the logger with the slack config if you plan on logging to Slack. If not, you need to pass an empty object 
+
+  ```node
+  const logger = require('turbo-logger').createStream({}); // env will default to logging to console.
 
   ```
 
 
   - Single Logger
-    - To log to Slack only, add an env parameter, whether prod, dev or create a custom with ```slack``` as the only value specified in the arrray. This sends the message to the provided slack channel in the config alone, if the config object doesn't have the required slack parameters, it will throw an error. Within the slack object in the config, ```webhook_url```, and ```channel``` are required. To use this Slack log, you need to create a slack app and also create an incoming webhook_url through which request will be forwarded to Slack. For more details check out [this brilliant guide](https://api.slack.com/apps).
+    To log only to Slack, set the environment parameter to "slack" and provide the required Slack configuration. Please note that in order to use this feature, you need to create a Slack app and obtain the necessary credentials.
+
+    Here's how to set up the Single Logger for Slack:
+
+    1. Create a Slack app following the instructions in the [ Slack App Creation Guide.](https://api.slack.com/apps).
+    2. Obtain the webhook_url and channel for your Slack app. The webhook_url is a unique URL that allows your application to send messages to a specific Slack channel.
+    3. Configure the config object with the webhook_url and channel values:
+
     ```node
         const config = {
-                "slack": {
-                    webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
-                    channel: 'passionapi',
-                }
-            };
-        const env = {
-            prod: ['console', 'slack'],
-            dev: ['file', 'console'],
-            myCustomConfig: ['slack']
-        };
-        const turboLogger = require('turbo-logger').createStream(config, env.myCustomConfig);
-        turboLogger.log('hello world'); //sends this message to a Slack channel
-        
+            "slack": {
+                webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
+                channel: 'sample-channel',
+            }
+        }
+
+        const env = ['slack']
+        const logger = require('turbo-logger').createStream(config, env);
+        logger.log('hello world'); // sends the message to the specified Slack channel
      ```
-        
-     - To log to file alone or console alone, we do the same thing we did with slack. Single logging can be achieved by setting only the level required in the env config.
-     
+            
+    Ensure that you replace ${process.env.SECRET} in the webhook_url with the actual secret value obtained from your Slack app.
+
+    **Note**: If the config object does not have the required webhook_url and channel parameters, TurboLogger will throw an error.
 
   - Hybrid Logger
-    - The hybrid Logger comprises of all three levels; console, file and slack. To do this, we simply use a config that has all three levels specified. In this case, prod.
+    The hybrid logger combines multiple log levels. It could be a combination of all three or any two levels. To use this, we set the environment configuration to include all three or any two log levels:
+
 
     ```node
-        const config = {
-                "slack": {
-                    webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
-                    channel: 'passionapi',
-                }
-            };
-        const env = {
-            prod: ['console', 'slack', 'file'],
-            dev: ['file', 'console'],
-            myCustomConfig: ['slack']
-        };
-        const turboLogger = require('turbo-logger').createStream(config, env.prod);
-        turboLogger.log('hello world'); //sends the said message to all contexts (console, slack and file).
-        
+        const env = ['console', 'slack', 'file']
+        const logger = require('turbo-logger').createStream(config, env);
+        logger.log('hello world'); // sends the message to all contexts (console, Slack, and file)
      ```
   - Logging multiple messages
-    - Turbo-logger allows you log comma-separated messages. For example;
+    TurboLogger allows you to log comma-separated messages. For example:
     
       ```node
-        const config = {
-                "slack": {
-                    webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
-                    channel: 'passionapi',
-                }
-            };
-        const env = {
-            prod: ['console', 'slack', 'file'],
-            dev: ['file', 'console'],
-            myCustomConfig: ['slack']
-        };
-        const turboLogger = require('turbo-logger').createStream(config, env.prod);
-        turboLogger.log('My config object : ', config); //
+        turboLogger.log('My config object: ', config);
     ```
-  The console prints: <img width="982" alt="Screenshot 2019-12-13 at 10 14 42 AM" src="https://user-images.githubusercontent.com/16461858/70788550-6af31380-1d91-11ea-8958-caadcefa20dc.png">
+    The console prints: <img width="982" alt="Screenshot 2019-12-13 at 10 14 42 AM" src="https://user-images.githubusercontent.com/16461858/70788550-6af31380-1d91-11ea-8958-caadcefa20dc.png">
 
-  You can log as many comma-separated messages as you want.
-
+    You can log as many comma-separated messages as you want.
 
 
   - License
-      - MIT
+    TurboLogger is licensed under the MIT License.
+
       
   - Author
-      - Gideon Odiase
+    TurboLogger was created by Gideon Odiase.
+
+
+

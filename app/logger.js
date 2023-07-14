@@ -61,7 +61,7 @@ module.exports = {
                 throw new Error('\n', config.validationErrorMessage + ': ', validator.error.details, '\n');
             }
         }
-          
+
         return new Logger(appConfig, env);  
     }
 }

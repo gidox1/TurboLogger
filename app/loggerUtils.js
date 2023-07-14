@@ -15,8 +15,8 @@ class LoggerUtils {
      * @param {String} message 
      * @param {Object} appConfig 
      */
-    hybridLogger(message, appConfig) {
-        const callBack =  this.logSlack(message, appConfig);
+    async hybridLogger(message, appConfig) {
+        const callBack = await this.logSlack(message, appConfig);
         if(callBack && (appConfig.console || appConfig.file)) {
             delete appConfig.slack;
             return this.logLevelSetUp(message, appConfig);
@@ -43,9 +43,9 @@ class LoggerUtils {
      * @param {String} message
      * @param {Object} appConfig
      */
-    logSlack(message, appConfig) {
+    async logSlack(message, appConfig) {
         const slackLogger = new SlackStream();
-        return  slackLogger.slack(message, appConfig)
+        return await slackLogger.slack(message, appConfig)
     }
 
 
