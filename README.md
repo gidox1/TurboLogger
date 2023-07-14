@@ -51,7 +51,7 @@ Install TurboLogger using npm:
   ```
 
 
-### **Single Logger**
+## **Single Logger**
 
 To log only to Slack, set the environment parameter to "slack" and provide the required Slack configuration. Please note that in order to use this feature, you need to create a Slack app and obtain the necessary credentials.
 
@@ -80,7 +80,7 @@ Here's how to set up the Single Logger for Slack:
     **Note**: If the config object does not have the required webhook_url and channel parameters, TurboLogger will throw an error.
 
 
-### **Hybrid Logger**
+## **Hybrid Logger**
 
 The hybrid logger combines multiple log levels. It could be a combination of all three or any two levels. To use this, we set the environment configuration to include all three or any two log levels:
 
@@ -101,7 +101,7 @@ The console prints: <img width="982" alt="Screenshot 2019-12-13 at 10 14 42 AM" 
 You can log as many comma-separated messages as you want.
 
 
-### **Logging To Multiple Slack Channel**
+## **Logging To Multiple Slack Channel**
 
 You can log to several Slack channels. The logger streams are configured separately as every channel
 ```node
@@ -135,11 +135,11 @@ You can log to several Slack channels. The logger streams are configured separat
 	slackSuccessLogger.log("Request successful") // This sends a message with an info context to the channel named "success-logs"
 ```
 
-### **License**
+## **License**
 TurboLogger is licensed under the MIT License.
 
       
- ### **Author**
+ ## **Author**
  TurboLogger was created by [Gideon Odiase](https://api.slack.com/apps)..
 
 
