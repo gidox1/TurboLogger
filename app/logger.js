@@ -1,8 +1,8 @@
 'use strict';
-const config = require('./config')
-const LoggerUtils = require('./loggerUtils');
-let utils = null
+import config from './config.js';
+import { LoggerUtils } from './loggerUtils.js';
 
+let utils = null
 class Logger {
 
     constructor(appConfig, env) {
@@ -41,19 +41,16 @@ class Logger {
     }
 }
 
-
-module.exports = {
-
-    /**
-     * Creates logger stream
-     * @param {Object} appConfig 
-     */
-    
-    createStream: function (appConfig, env = null) {
+/**
+ * Creates logger stream
+ * @param {Object} appConfig 
+ */
+export default {
+    createStream: (appConfig, env = null) => {
         if (!appConfig) {
             throw new Error('Please initialize logger with config object')
         } 
-        
+    
         if(appConfig && appConfig.hasOwnProperty('slack')) {
             let utils = new LoggerUtils();
             const validator = utils.validatePayload(appConfig);
@@ -61,7 +58,6 @@ module.exports = {
                 throw new Error(`${config.validationErrorMessage}: ${validator.error.details[0].message}`);
             }
         }
-
         return new Logger(appConfig, env);  
     }
 }

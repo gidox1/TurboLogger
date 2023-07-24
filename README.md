@@ -20,6 +20,8 @@ Install TurboLogger using npm:
 ## Usage
 
   ```node
+    import turboLogger from 'turbo-logger';
+
     const config = {
         "slack": {
             webhook_url: `${process.env.WEBHOOK_URL}`,
@@ -33,7 +35,7 @@ Install TurboLogger using npm:
         myCustomConfig: ['console']
     }
     
-    const logger = require('turbo-logger').createStream(config, env.prod);
+    const logger = turboLogger.createStream(config, env.prod);
   ```
   Once the logger is initialized, you can use it to log messages:
 
@@ -46,7 +48,8 @@ Install TurboLogger using npm:
   You need to initialize the logger with the slack config if you plan on logging to Slack. If not, you need to pass an empty object 
 
   ```node
-  const logger = require('turbo-logger').createStream({}); // env will default to logging to console.
+      import turboLogger from 'turbo-logger';
+      const logger = turboLogger.createStream({}); // env will default to logging to console.
 
   ```
 
@@ -72,7 +75,7 @@ Here's how to set up the Single Logger for Slack:
         }
 
         const env = ['slack']
-        const logger = require('turbo-logger').createStream(config, env);
+        const logger = turboLogger.createStream(config, env);
         logger.log('hello world'); // sends the message to the specified Slack channel
      ```
     Ensure that you replace ${process.env.SECRET} in the webhook_url with the actual secret value obtained from your Slack app.
@@ -86,14 +89,14 @@ The hybrid logger combines multiple log levels. It could be a combination of all
 
 ```node
 		const env = ['console', 'slack', 'file']
-		const logger = require('turbo-logger').createStream(config, env);
+		const logger = turboLogger.createStream(config, env);
 		logger.log('hello world'); // sends the message to all contexts (console, Slack, and file)
 ```
 
 ## **Logging multiple messages**
 TurboLogger allows you to log comma-separated messages. For example:
 ```node
-	turboLogger.log('My config object: ', config);
+	logger.log('My config object: ', config);
 ```
 
 The console prints: <img width="982" alt="Screenshot 2019-12-13 at 10 14 42 AM" src="https://user-images.githubusercontent.com/16461858/70788550-6af31380-1d91-11ea-8958-caadcefa20dc.png">
@@ -105,7 +108,7 @@ You can log as many comma-separated messages as you want.
 
 You can log to several Slack channels. The logger streams are configured separately as every channel
 ```node
-	const logger = require('turbo-logger');
+	import turboLogger from 'turbo-logger';
 	const env = ['slack'];
 
 	// Error channel set up
@@ -127,8 +130,8 @@ You can log to several Slack channels. The logger streams are configured separat
 	};
 	
 	// Instantiate logger
-	const slackErrorLogger = logger.createStream(errorChannelConfig, env)
-	const slackSuccessLogger = logger.createStream(errorChannelConfig, env)
+	const slackErrorLogger = turboLogger.createStream(errorChannelConfig, env)
+	const slackSuccessLogger = turboLogger.createStream(errorChannelConfig, env)
 
 	// Usage
 	slackErrorLogger.error("Internal server error") // This sends a message with an error context to the channel named "error-logs"

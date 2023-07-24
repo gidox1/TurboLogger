@@ -1,11 +1,10 @@
 'use strict';
 
-const config = require('./config');
-const requestConfig = require('./config').requestConfig;
-const axios = require('axios');
+import config from './config.js';
+import axios from 'axios';
+const requestConfig = config.requestConfig;
 
-class SlackLogger {
-
+export class SlackLogger {
     /**
      * Recieves message and context from the logger method
      * @param {object} message 
@@ -46,5 +45,3 @@ class SlackLogger {
     }
     
 }
-
-module.exports = SlackLogger

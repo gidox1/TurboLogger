@@ -1,23 +1,20 @@
 'use strict';
 
-
-const loggerSetUp = require('./loggerSetUp');
-const SlackStream = require('./slackLogger');
+import { LTransport as loggerSetUp }  from './loggerSetUp.js'
+import { SlackLogger as SlackStream }from './slackLogger.js'
 const setUp = new loggerSetUp();
-const schema = require('./validator').Schema;
-const config = require('./config');
+import { Schema as schema } from './validator.js';
+import config from './config.js';
 
-
-class LoggerUtils {
-
+export class LoggerUtils {
     /**
      * Logs to file, Console and Slack
      * @param {String} message 
      * @param {Object} appConfig 
      */
     async hybridLogger(message, appConfig) {
-        const callBack = await this.logSlack(message, appConfig);
-        if(callBack && (appConfig.console || appConfig.file)) {
+        await this.logSlack(message, appConfig);
+        if('console' in appConfig || 'file' in appConfig) {
             delete appConfig.slack;
             return this.logLevelSetUp(message, appConfig);
         }
@@ -161,5 +158,3 @@ class LoggerUtils {
         return this.pipeStream(appConfig, builtMessage, env);
     }
 }
-
-module.exports = LoggerUtils;

@@ -1,12 +1,10 @@
 'use strict';
 
-const {format, transports } = require('winston');
-const winston = require('winston')
-const defaultConfig = require('./config');
-const path = require('path');
+import winston, { format, transports} from 'winston';
+import { default as defaultConfig } from './config.js';
+import path from 'path';
 
-class LTransport {
-
+export class LTransport {
   /**
    * Create Transport for logging to console or file
    * @param {param object} param 
@@ -64,5 +62,3 @@ class LTransport {
     }
   }
 }
-
-module.exports = LTransport;

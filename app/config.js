@@ -1,8 +1,6 @@
+import { format, transports} from 'winston'
 
-const path = require('path');
-const {format, transports, } = require('winston');
-
-const defaultConfig = {
+export default {
     level: {
         info: 'info',
         warn: 'warn',
@@ -47,5 +45,3 @@ const defaultConfig = {
     }),
     validationErrorMessage: 'A validation error occured'
 }
-
-module.exports = defaultConfig;
