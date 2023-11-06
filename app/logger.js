@@ -7,7 +7,7 @@ class Logger {
 
     constructor(appConfig, env) {
         utils = new LoggerUtils();
-        this.env = env || ['console'],
+        this.env = env || config.defaultEnv,
         this.appConfig = appConfig;
     }
 
@@ -46,11 +46,7 @@ class Logger {
  * @param {Object} appConfig 
  */
 export default {
-    createStream: (appConfig, env = null) => {
-        if (!appConfig) {
-            throw new Error('Please initialize logger with config object')
-        } 
-    
+    createStream: (appConfig = {}, env = null) => {    
         if(appConfig && appConfig.hasOwnProperty('slack')) {
             let utils = new LoggerUtils();
             const validator = utils.validatePayload(appConfig);

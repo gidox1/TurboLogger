@@ -17,7 +17,7 @@
     "mocha": "^10.2.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha tests/app_test.js"
+    "test": "mocha tests/*.js"
   },
   "repository": {
     "type": "git",

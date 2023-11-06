@@ -43,5 +43,6 @@ export default {
           ),
         json: true,
     }),
-    validationErrorMessage: 'A validation error occured'
+    validationErrorMessage: 'A validation error occured',
+    defaultEnv: ['console']
 }

@@ -1,15 +1,13 @@
 'use strict';
 
 
-class DataFactory {
+export default class DataFactory {
 
     static getConfigForSlack = () => {
             return  {
-                "level": "info",
                 "slack": {
                     webhook_url: `https://hooks.slack.com/services/${process.env.SECRET}`,
                     channel: 'passionapi',
-                    context: 'info'
                 }
         }
     }
@@ -33,5 +31,3 @@ class DataFactory {
         }
     }
 }
-
-module.exports = DataFactory
