@@ -1,7 +1,8 @@
+type AcceptedTypes = string | Record<string, any> | number | string[] | Record<string, any>[] | number[];
 interface Logger {
-  log: () => void;
-  error: () => void;
-  warn: () => void;
+  log: (...args: AcceptedTypes) => void;
+  error: (...args: AcceptedTypes) => void;
+  warn: (...args: AcceptedTypes) => void;
 }
 
 enum Envs {
