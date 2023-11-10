@@ -1,10 +1,10 @@
 'use strict';
 
-import winston, { format, transports} from 'winston';
-import { default as defaultConfig } from './config.js';
-import path from 'path';
+const winston = require('winston');
+const defaultConfig = require('./config.js');
+const path = require('path');
 
-export class LTransport {
+class LTransport {
   /**
    * Create Transport for logging to console or file
    * @param {param object} param 
@@ -18,7 +18,7 @@ export class LTransport {
 
     if(param.file == true) {
       param.logDir = defaultConfig.logDir;
-      transportArray.push(new transports.File({ filename }))
+      transportArray.push(new winston.transports.File({ filename }))
     }
 
     (!param.console && !param.file) ? 
@@ -27,11 +27,11 @@ export class LTransport {
     
     const logger = winston.createLogger({
       format: winston.format.json(),
-      format: format.combine(
-        format.timestamp({
+      format: winston.format.combine(
+        winston.format.timestamp({
           format: defaultConfig.timestampFormat
         }),
-        format.printf(
+        winston.format.printf(
           info =>
           `${info.level} [Timestamp: ${info.timestamp}]: ${info.message}`
         )
@@ -62,3 +62,6 @@ export class LTransport {
     }
   }
 }
+
+
+module.exports = LTransport;

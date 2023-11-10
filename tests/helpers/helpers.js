@@ -1,7 +1,7 @@
 'use strict';
 
 
-export default class DataFactory {
+class DataFactory {
 
     static getConfigForSlack = () => {
             return  {
@@ -31,3 +31,5 @@ export default class DataFactory {
         }
     }
 }
+
+module.exports = DataFactory;

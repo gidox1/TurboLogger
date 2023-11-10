@@ -1,12 +1,12 @@
 'use strict';
 
-import { LTransport as loggerSetUp }  from './loggerSetUp.js'
-import { SlackLogger as SlackStream }from './slackLogger.js'
+const loggerSetUp = require('./loggerSetUp.js');
+const SlackStream = require('./slackLogger.js');
 const setUp = new loggerSetUp();
-import { Schema as schema } from './validator.js';
-import config from './config.js';
+const schema = require('./validator.js');
+const config = require('./config.js');
 
-export class LoggerUtils {
+class LoggerUtils {
     /**
      * Logs to file, Console and Slack
      * @param {String} message 
@@ -158,3 +158,5 @@ export class LoggerUtils {
         return this.pipeStream(appConfig, builtMessage, env);
     }
 }
+
+module.exports = LoggerUtils;

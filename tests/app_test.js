@@ -1,9 +1,9 @@
-import chai from 'chai';
-import  { LTransport as loggerConfig } from '../app/loggerSetUp.js';
-import { Schema as schema } from '../app/validator.js';
-import helpers from './helpers/helpers.js';
-import Logger from '../app/logger.js';
-import config from '../app/config.js';
+const chai = require('chai');
+const  loggerConfig = require('../app/loggerSetUp.js');
+const schema = require('../app/validator.js');
+const helpers = require('./helpers/helpers.js');
+const Logger = require('../app/logger.js');
+const config = require('../app/config.js');
 const expect = chai.expect
 
 describe('Default Logger', function(done) {

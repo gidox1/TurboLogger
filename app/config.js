@@ -1,6 +1,6 @@
-import { format, transports} from 'winston'
+const { format, transports } = require('winston');
 
-export default {
+module.exports =  {
     level: {
         info: 'info',
         warn: 'warn',

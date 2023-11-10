@@ -1,8 +1,9 @@
 'use strict';
-import config from './config.js';
-import { LoggerUtils } from './loggerUtils.js';
+const config = require('./config.js');
+const LoggerUtils = require('./loggerUtils.js');
 
-let utils = null
+let utils = null;
+
 class Logger {
 
     constructor(appConfig, env) {
@@ -45,7 +46,7 @@ class Logger {
  * Creates logger stream
  * @param {Object} appConfig 
  */
-export default {
+module.exports = {
     createStream: (appConfig = {}, env = null) => {    
         if(appConfig && appConfig.hasOwnProperty('slack')) {
             let utils = new LoggerUtils();

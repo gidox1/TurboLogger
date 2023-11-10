@@ -1,6 +1,6 @@
-import joi from 'joi';
+const joi = require('joi');
 
-export const Schema = joi.object({
+module.exports = joi.object({
     slack: joi.object({
         webhook_url: joi.string().required(),
         channel: joi.string().required(),
