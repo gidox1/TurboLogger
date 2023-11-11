@@ -45,11 +45,11 @@ Install TurboLogger using npm:
     logger.error('hello world'); // logs the message to a file and the console with an "error" context
   ```
 
-  You need to initialize the logger with the slack config if you plan on logging to Slack. If not, you need to pass an empty object 
+  You need to initialize the logger with the slack config if you plan on logging to Slack. If not, you can use like so.
 
   ```node
       import turboLogger from 'turbo-logger';
-      const logger = turboLogger.createStream({}); // env will default to logging to console.
+      const logger = turboLogger.createStream(); // env will default to logging to console.
 
   ```
 
@@ -122,7 +122,7 @@ You can log to several Slack channels. The logger streams are configured separat
 	
 	// Success channel set up
 	const successChannelName = "success-logs";
-		const errorChannelConfig = {
+		const successChannelConfig = {
 		"slack": {
 			webhook_url: `${process.env.SLACK_SUCCESS_CHANNEL_WEBHOOK_URL}`,
 			channel: successChannelName,
@@ -130,8 +130,8 @@ You can log to several Slack channels. The logger streams are configured separat
 	};
 	
 	// Instantiate logger
-	const slackErrorLogger = turboLogger.createStream(errorChannelConfig, env)
-	const slackSuccessLogger = turboLogger.createStream(errorChannelConfig, env)
+	const slackErrorLogger = turboLogger.createStream(errorChannelConfig, env);
+	const slackSuccessLogger = turboLogger.createStream(successChannelConfig, env);
 
 	// Usage
 	slackErrorLogger.error("Internal server error") // This sends a message with an error context to the channel named "error-logs"
@@ -144,6 +144,10 @@ TurboLogger is licensed under the MIT License.
       
  ## **Author**
  TurboLogger was created by [Gideon Odiase](https://www.linkedin.com/in/gideon-odiase-07240313b/).
+
+ ## **Support**
+ Buy me a coffee [here](https://www.buymeacoffee.com/gidox).
+
 
 
 

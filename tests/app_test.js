@@ -26,9 +26,7 @@ describe('Default Logger', function(done) {
 })
 
 describe('Slack Logger', function() {
-
     const payload = helpers.getConfigForSlack();
-
     it('Should Validate the payload', function() {
         const result = schema.validate(payload, schema.Schema);
         expect(result.value.slack).to.include.all.keys('webhook_url', 'channel');

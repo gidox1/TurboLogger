@@ -149,7 +149,6 @@ class LoggerUtils {
    */
     formatMethod(appConfig, env, scope, ...message) {
         const builtMessage = this.buildMesaage(message);
-        
         appConfig.level = config.level[scope];
         appConfig.context = config.level[scope];
         if(this.checkENV(env) === false){
