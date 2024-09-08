@@ -16,6 +16,7 @@ interface AppConfig {
     webhook_url: string,
     channel: string
   },
+  enableTimestamp: boolean;
 }
 
 /**
