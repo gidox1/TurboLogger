@@ -1,4 +1,14 @@
-type AcceptedTypes = string | Record<string, any> | number | string[] | Record<string, any>[] | number[] | Record<any, any> | Record<any, any>[];
+type AcceptedTypes = string | undefined |
+  number | undefined |
+  unknown |
+  Record<string, any> | undefined |
+  string[] | undefined |
+  Record<string, any>[] | undefined |
+  number[] | undefined |
+  Record<any, any> | undefined |
+  Record<any, any>[] | undefined
+
+
 interface Logger {
   log: (...args: AcceptedTypes[]) => void;
   error: (...args: AcceptedTypes[]) => void;
