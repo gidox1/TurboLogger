@@ -12,8 +12,12 @@ class LTransport {
   createTransports(param) {
     const filename = path.join(defaultConfig.logDir, 'info.log');
     const transportArray = [];
+    const defaultLoggerConfig = param.hasOwnProperty('enableTimestamp') ?
+      param :
+      { ...param, enableTimestamp: true };
+
     if(param.console == true) {
-        transportArray.push(defaultConfig.transpotsLevelConfig);
+        transportArray.push(defaultConfig.transpotsLevelConfig(defaultLoggerConfig));
     }
 
     if(param.file == true) {
@@ -22,12 +26,12 @@ class LTransport {
     }
 
     (!param.console && !param.file) ? 
-      transportArray.push(defaultConfig.transpotsLevelConfig) 
+      transportArray.push(defaultConfig.transpotsLevelConfig(defaultLoggerConfig)) 
         : param.console = false;
     
     const logger = winston.createLogger({
-      format: winston.format.json(),
       format: winston.format.combine(
+        winston.format.json(),
         winston.format.timestamp({
           format: defaultConfig.timestampFormat
         }),

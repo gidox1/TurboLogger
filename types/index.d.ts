@@ -1,4 +1,4 @@
-type AcceptedTypes = string | Record<string, any> | number | string[] | Record<string, any>[] | number[];
+type AcceptedTypes = string | Record<string, any> | number | string[] | Record<string, any>[] | number[] | Record<any, any> | Record<any, any>[];
 interface Logger {
   log: (...args: AcceptedTypes[]) => void;
   error: (...args: AcceptedTypes[]) => void;
@@ -15,7 +15,7 @@ interface AppConfig {
   slack?: {
     webhook_url: string,
     channel: string
-  }
+  },
 }
 
 /**

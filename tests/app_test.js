@@ -12,7 +12,10 @@ describe('Default Logger', function(done) {
         const result = schema.validate(payload, schema.Schema);
         expect(result.value).to.include.all.keys('level');
         expect(new loggerConfig()).to.be.an.instanceof(loggerConfig);
-        const loggerSetup = Logger.createStream(payload);
+        const loggerSetup = Logger.createStream({
+            ...payload,
+            enableTimestamp: false,
+        });
         const logBody = loggerSetup.log("Hello world")
         expect(logBody).to.contain.property('levels');
     })

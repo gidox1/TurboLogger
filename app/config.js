@@ -32,13 +32,12 @@ module.exports =  {
     colorize: false,
     timestampFormat: 'YYYY-MM-DD HH:mm:ss',
     logDir: 'fileLog',
-    transpotsLevelConfig : new transports.Console({
+    transpotsLevelConfig: (args = { enableTimestamp: true }) => new transports.Console({
         level: 'info',
         format: format.combine(
             format.colorize(),
             format.printf(
-              info =>
-                `${info.level} [Timestamp: ${info.timestamp}]: ${info.message}`
+              info => `${info.level}: ${args.enableTimestamp ? `[Timestamp: ${info.timestamp}]` : ''} ${info.message}`
             )
           ),
         json: true,
