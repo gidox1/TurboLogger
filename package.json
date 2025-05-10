@@ -1,6 +1,6 @@
 {
   "name": "turbo-logger",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "Console, file and Slack logger for Node.js Applications",
   "main": "app/logger.js",
   "types": "types/index.d.ts",
@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "@logtail/node": "^0.5.4",
     "axios": "^1.4.0",
     "joi": "^17.9.2",
     "winston": "^3.10.0"

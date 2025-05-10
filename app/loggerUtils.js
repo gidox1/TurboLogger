@@ -123,18 +123,24 @@ class LoggerUtils {
    * Format all message passed to external endpoint
    * @param  {...any} message 
    */
-  buildMesaage(...message) {
+  buildMesaage(message) {
     let formattedMessage = '';
-    let messageArray = [...message];
+    const red = '\x1b[31m';
+    const reset = '\x1b[0m';
 
-    messageArray[0].map(eachMessage => {
-        if(typeof eachMessage == 'object') {
+    message.map(eachMessage => {
+        if (eachMessage instanceof Error) {
+            formattedMessage = formattedMessage + `
+                ${red}Error:${reset} ${eachMessage.message}
+                ${red}Stack:${reset} ${eachMessage.stack}
+                ${red}Name:${reset} ${eachMessage.name}
+            `;
+        } else if (typeof eachMessage === 'object') {
             formattedMessage = formattedMessage + JSON.stringify(eachMessage);
+        } else {
+            formattedMessage = formattedMessage + eachMessage;
         }
-        else {
-            formattedMessage = formattedMessage + eachMessage
-        }
-    })
+    });
 
     return formattedMessage;
   }

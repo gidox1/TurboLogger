@@ -1,6 +1,7 @@
 'use strict';
 const config = require('./config.js');
 const LoggerUtils = require('./loggerUtils.js');
+const types = require('./types.js');
 
 let utils = null;
 
@@ -44,9 +45,15 @@ class Logger {
 
 /**
  * Creates logger stream
- * @param {Object} appConfig 
+ * @param {types.AppConfig} appConfig 
  */
 module.exports = {
+    /**
+     * 
+     * @param {types.AppConfig} appConfig 
+     * @param {string[]} env - Array of environment strings
+     * @returns {Object}
+     */
     createStream: (appConfig = {}, env = null) => {    
         if(appConfig && appConfig.hasOwnProperty('slack')) {
             let utils = new LoggerUtils();

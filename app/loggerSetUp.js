@@ -3,14 +3,15 @@
 const winston = require('winston');
 const defaultConfig = require('./config.js');
 const path = require('path');
+const types = require('./types.js');
+const { uploadLog } = require('./providers/logTail');
 
 class LTransport {
   /**
    * Create Transport for logging to console or file
-   * @param {param object} param 
+   * @param {types.AppConfig} param 
    */
   createTransports(param) {
-    const filename = path.join(defaultConfig.logDir, 'info.log');
     const transportArray = [];
     const defaultLoggerConfig = param.hasOwnProperty('enableTimestamp') ?
       param :
@@ -22,6 +23,7 @@ class LTransport {
 
     if(param.file == true) {
       param.logDir = defaultConfig.logDir;
+      const filename = path.join(defaultConfig.logDir, 'info.log');
       transportArray.push(new winston.transports.File({ filename }))
     }
 
@@ -35,10 +37,15 @@ class LTransport {
         winston.format.timestamp({
           format: defaultConfig.timestampFormat
         }),
-        winston.format.printf(
-          info =>
-          `${info.level} [Timestamp: ${info.timestamp}]: ${info.message}`
-        )
+        winston.format.printf(async (info) => {
+          const message = `${info.level} [Timestamp: ${info.timestamp}]: ${info.message}`;
+          
+          if (param.providers?.logtail) {
+            await uploadLog(info.message, info, info.level, param.providers.logtail);
+          }
+          
+          return message;
+        })
       ),
       transports: transportArray
     });
