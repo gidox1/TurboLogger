@@ -148,7 +148,9 @@ class LoggerUtils {
    * @param {String} message 
    */
     formatMethod(appConfig, env, scope, ...message) {
+        console.log(message, "MESSAGE");
         const builtMessage = this.buildMesaage(message);
+        console.log(builtMessage, "BUILT MESSAGE");
         appConfig.level = config.level[scope];
         appConfig.context = config.level[scope];
         if(this.checkENV(env) === false){
