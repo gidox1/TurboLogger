@@ -1,13 +1,13 @@
 const { Logtail } = require("@logtail/node");
 
-const uploadLog = async (message, context, level) => {
+const uploadLog = async (message, context, level, config) => {
   try {
-    if (!process.env.LOGTAIL_SOURCE_TOKEN || !process.env.LOGTAIL_ENDPOINT) {
+    if (!config.sourceToken || !config.endpoint) {
       throw new Error("LOGTAIL_SOURCE_TOKEN and LOGTAIL_ENDPOINT environment variables must be set");
     }
 
-    const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN, {
-      endpoint: process.env.LOGTAIL_ENDPOINT,
+    const logtail = new Logtail(config.sourceToken, {
+      endpoint: config.endpoint,
     });
 
     let result;

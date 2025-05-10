@@ -27,6 +27,12 @@ interface AppConfig {
     channel: string
   },
   enableTimestamp: boolean;
+  providers?: {
+    logtail?: {
+      sourceToken: string,
+      endpoint: string,
+    }
+  }
 }
 
 /**

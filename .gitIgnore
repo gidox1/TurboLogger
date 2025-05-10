@@ -4,3 +4,4 @@ fileLog
 dist
 .env
 test-logtail.js
+.env

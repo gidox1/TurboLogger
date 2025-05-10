@@ -125,10 +125,16 @@ class LoggerUtils {
    */
   buildMesaage(message) {
     let formattedMessage = '';
+    const red = '\x1b[31m';
+    const reset = '\x1b[0m';
 
     message.map(eachMessage => {
         if (eachMessage instanceof Error) {
-            formattedMessage = formattedMessage + `Error: ${eachMessage.message}\nStack: ${eachMessage.stack}\nName: ${eachMessage.name}`;
+            formattedMessage = formattedMessage + `
+                ${red}Error:${reset} ${eachMessage.message}
+                ${red}Stack:${reset} ${eachMessage.stack}
+                ${red}Name:${reset} ${eachMessage.name}
+            `;
         } else if (typeof eachMessage === 'object') {
             formattedMessage = formattedMessage + JSON.stringify(eachMessage);
         } else {
@@ -148,9 +154,7 @@ class LoggerUtils {
    * @param {String} message 
    */
     formatMethod(appConfig, env, scope, ...message) {
-        console.log(message, "MESSAGE");
         const builtMessage = this.buildMesaage(message);
-        console.log(builtMessage, "BUILT MESSAGE");
         appConfig.level = config.level[scope];
         appConfig.context = config.level[scope];
         if(this.checkENV(env) === false){
