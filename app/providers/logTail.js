@@ -24,7 +24,6 @@ const uploadLog = async (message, context, level, config) => {
     }
     return result;
   } catch (error) {
-    console.error('Failed to upload log to Logtail:', error.message);
     return null;
   }
 }

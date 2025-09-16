@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "@datadog/datadog-api-client": "^1.43.0",
     "@logtail/node": "^0.5.4",
     "axios": "^1.4.0",
     "joi": "^17.9.2",

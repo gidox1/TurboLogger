@@ -1,9 +1,18 @@
 'use strict';
 const joi = require('joi');
 
-const providerSchema = joi.object({
+const logtailSchema = joi.object({
     sourceToken: joi.string().required().min(5),
     endpoint: joi.string().uri().required()
+});
+
+const datadogSchema = joi.object({
+    apiKey: joi.string().required().min(5),
+    endpoint: joi.string().uri().required(),
+    service: joi.string().required(),
+    source: joi.string().optional(),
+    hostname: joi.string().optional(),
+    tags: joi.string().optional()
 });
 
 module.exports = joi.object({
@@ -12,7 +21,8 @@ module.exports = joi.object({
         channel: joi.string().required(),
     }),
     providers: joi.object({
-        logtail: providerSchema,
+        logtail: logtailSchema,
+        datadog: datadogSchema,
     }),
     enableTimestamp: joi.boolean().default(true),
 });

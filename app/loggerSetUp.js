@@ -5,6 +5,7 @@ const defaultConfig = require('./config.js');
 const path = require('path');
 const types = require('./types.js');
 const { uploadLog } = require('./providers/logTail');
+const { sendLogsToDatadog } = require('./providers/datadog');
 
 class LTransport {
   /**
@@ -42,6 +43,10 @@ class LTransport {
           
           if (param.providers?.logtail) {
             await uploadLog(info.message, info, info.level, param.providers.logtail);
+          }
+
+          if (param.providers?.datadog) {
+            await sendLogsToDatadog(info.message, info, info.level, param.providers.datadog);
           }
           
           return message;

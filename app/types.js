@@ -13,8 +13,19 @@
  */
 
 /**
+ * @typedef {Object} DatadogConfig
+ * @property {string} apiKey - The Datadog API key
+ * @property {string} endpoint - The Datadog endpoint URL
+ * @property {string} service - The service name
+ * @property {string} [source] - The source identifier for logs
+ * @property {string} [hostname] - The hostname
+ * @property {string} [tags] - Tags for log categorization
+ */
+
+/**
  * @typedef {Object} ProvidersConfig
  * @property {LogtailConfig} [logtail] - Optional Logtail configuration
+ * @property {DatadogConfig} [datadog] - Optional Datadog configuration
  */
 
 /**
@@ -37,6 +48,10 @@ module.exports = {
      * @type {LogtailConfig}
      */
     LogtailConfig: {},
+    /**
+     * @type {DatadogConfig}
+     */
+    DatadogConfig: {},
     /**
      * @type {ProvidersConfig}
      */

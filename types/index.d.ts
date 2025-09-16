@@ -31,6 +31,14 @@ interface AppConfig {
     logtail?: {
       sourceToken: string,
       endpoint: string,
+    },
+    datadog?: {
+      apiKey: string,
+      endpoint: string,
+      service: string,
+      source?: string,
+      hostname?: string,
+      tags?: string
     }
   }
 }

@@ -150,6 +150,134 @@ describe('Logtail Integration', function() {
     });
 });
 
+describe('Datadog Integration', function() {
+    const datadogConfig = {
+        providers: {
+            datadog: {
+                apiKey: process.env.DD_API_KEY || 'test-api-key',
+                endpoint: process.env.DD_ENDPOINT || 'https://http-intake.logs.datadoghq.eu',
+                service: 'turbo-logger-service',
+                source: 'turbo-logger',
+                hostname: 'test-hostname',
+                tags: 'env:test,version:1.0.0'
+            }
+        }
+    };
+
+    it('Should validate Datadog configuration', function() {
+        const result = schema.validate(datadogConfig, schema.Schema);
+        expect(result.error).to.be.undefined;
+        expect(result.value.providers.datadog).to.have.property('apiKey');
+        expect(result.value.providers.datadog).to.have.property('endpoint');
+        expect(result.value.providers.datadog).to.have.property('service');
+    });
+
+    it('Should create logger with Datadog transport', function() {
+        const loggerSetup = Logger.createStream(datadogConfig);
+        expect(loggerSetup).to.have.property('log');
+        expect(loggerSetup).to.have.property('error');
+        expect(loggerSetup).to.have.property('warn');
+    });
+
+    it('Should handle Datadog logging with metadata', async function() {
+        const loggerSetup = Logger.createStream(datadogConfig);
+        const metadata = { 
+            test: true, 
+            timestamp: new Date().toISOString(),
+            metrics: { responseTime: 150, memoryUsage: '50MB' },
+            userId: 123
+        };
+        const logBody = await loggerSetup.log('Test Datadog with metadata', metadata);
+        expect(logBody).to.contain.property('levels');
+    });
+
+    it('Should handle Datadog error logging', async function() {
+        const loggerSetup = Logger.createStream(datadogConfig);
+        const error = new Error('Test Datadog error');
+        const logBody = await loggerSetup.error(error);
+        expect(logBody).to.contain.property('levels');
+    });
+
+    it('Should handle Datadog with invalid API key gracefully', async function() {
+        const invalidConfig = {
+            ...datadogConfig,
+            providers: {
+                datadog: {
+                    apiKey: 'invalid-api-key',
+                    endpoint: datadogConfig.providers.datadog.endpoint,
+                    service: datadogConfig.providers.datadog.service,
+                    source: datadogConfig.providers.datadog.source
+                }
+            }
+        };
+        const loggerSetup = Logger.createStream(invalidConfig);
+        const logBody = await loggerSetup.log('Should not fail');
+        expect(logBody).to.contain.property('levels');
+    });
+
+    it('Should handle Datadog with missing API key gracefully', async function() {
+        const invalidConfig = {
+            ...datadogConfig,
+            providers: {
+                datadog: {
+                    endpoint: datadogConfig.providers.datadog.endpoint,
+                    service: datadogConfig.providers.datadog.service,
+                    source: datadogConfig.providers.datadog.source
+                }
+            }
+        };
+        const loggerSetup = Logger.createStream(invalidConfig);
+        const logBody = await loggerSetup.log('Should not fail');
+        expect(logBody).to.contain.property('levels');
+    });
+
+    it('Should handle Datadog with custom tags and context', async function() {
+        const customConfig = {
+            ...datadogConfig,
+            providers: {
+                datadog: {
+                    ...datadogConfig.providers.datadog,
+                    tags: 'env:production,service:api,version:2.0.0'
+                }
+            }
+        };
+        const loggerSetup = Logger.createStream(customConfig);
+        const context = {
+            requestId: 'req-123',
+            userId: 456,
+            customMetrics: { cpu: 75, memory: 80 },
+            tags: ['api-call', 'user-action']
+        };
+        const logBody = await loggerSetup.log('Test with custom tags and context', context);
+        expect(logBody).to.contain.property('levels');
+    });
+
+    it('Should handle Datadog warn level logging', async function() {
+        const loggerSetup = Logger.createStream(datadogConfig);
+        const warningData = { 
+            warningType: 'deprecated_api',
+            suggestion: 'Use new API endpoint'
+        };
+        const logBody = await loggerSetup.warn('API deprecation warning', warningData);
+        expect(logBody).to.contain.property('levels');
+    });
+
+    it('Should fail validation when service is missing', function() {
+        const invalidConfig = {
+            providers: {
+                datadog: {
+                    apiKey: 'test-api-key',
+                    endpoint: 'https://http-intake.logs.datadoghq.eu'
+                    // Missing required service field
+                }
+            }
+        };
+        const result = schema.validate(invalidConfig, schema.Schema);
+        expect(result.error).to.not.be.undefined;
+        expect(result.error.details[0].message).to.contain('service');
+    });
+});
+
 describe('Logger Configuration', function() {
     it('Should handle missing configuration gracefully', function() {
         const loggerSetup = Logger.createStream();
@@ -170,6 +298,12 @@ describe('Logger Configuration', function() {
                 logtail: {
                     sourceToken: 'test-token',
                     endpoint: 'https://test-endpoint.com'
+                },
+                datadog: {
+                    apiKey: 'test-api-key',
+                    endpoint: 'https://http-intake.logs.datadoghq.eu',
+                    service: 'turbo-logger-service',
+                    source: 'turbo-logger'
                 }
             }
         };
