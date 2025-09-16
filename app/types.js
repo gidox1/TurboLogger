@@ -20,6 +20,7 @@
  * @property {string} [source] - The source identifier for logs
  * @property {string} [hostname] - The hostname
  * @property {string} [tags] - Tags for log categorization
+ * @property {string} env - The environment (e.g., production, staging)
  */
 
 /**

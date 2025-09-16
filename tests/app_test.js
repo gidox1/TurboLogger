@@ -159,7 +159,8 @@ describe('Datadog Integration', function() {
                 service: 'turbo-logger-service',
                 source: 'turbo-logger',
                 hostname: 'test-hostname',
-                tags: 'env:test,version:1.0.0'
+                tags: 'env:test,version:1.0.0',
+                env: 'test',
             }
         }
     };
@@ -206,7 +207,8 @@ describe('Datadog Integration', function() {
                     apiKey: 'invalid-api-key',
                     endpoint: datadogConfig.providers.datadog.endpoint,
                     service: datadogConfig.providers.datadog.service,
-                    source: datadogConfig.providers.datadog.source
+                    source: datadogConfig.providers.datadog.source,
+                    env: datadogConfig.providers.datadog.env,
                 }
             }
         };
@@ -303,7 +305,8 @@ describe('Logger Configuration', function() {
                     apiKey: 'test-api-key',
                     endpoint: 'https://http-intake.logs.datadoghq.eu',
                     service: 'turbo-logger-service',
-                    source: 'turbo-logger'
+                    source: 'turbo-logger',
+                    env: 'test',
                 }
             }
         };

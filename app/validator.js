@@ -12,7 +12,8 @@ const datadogSchema = joi.object({
     service: joi.string().required(),
     source: joi.string().optional(),
     hostname: joi.string().optional(),
-    tags: joi.string().optional()
+    tags: joi.string().optional(),
+    env: joi.string().required(),
 });
 
 module.exports = joi.object({
