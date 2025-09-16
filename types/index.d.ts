@@ -26,7 +26,7 @@ interface AppConfig {
     webhook_url: string,
     channel: string
   },
-  enableTimestamp: boolean;
+  enableTimestamp?: boolean;
   providers?: {
     logtail?: {
       sourceToken: string,

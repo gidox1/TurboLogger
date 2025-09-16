@@ -24,5 +24,5 @@ module.exports = joi.object({
         logtail: logtailSchema,
         datadog: datadogSchema,
     }),
-    enableTimestamp: joi.boolean().default(true),
+    enableTimestamp: joi.boolean().default(true).optional(),
 });
