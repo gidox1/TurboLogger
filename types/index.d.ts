@@ -34,7 +34,6 @@ interface AppConfig {
     },
     datadog?: {
       apiKey: string,
-      endpoint: string,
       service: string,
       source?: string,
       hostname?: string,
