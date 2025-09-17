@@ -37,7 +37,9 @@ const sendLogsToDatadog = async (message, context, level, config) => {
       level: level,
       timestamp: new Date().toISOString(),
       env: config.env,
-      context: context
+      attributes: {
+        ...context,
+      }
     };
 
     await logsApi.submitLog({
