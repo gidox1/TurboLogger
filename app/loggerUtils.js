@@ -120,6 +120,29 @@ class LoggerUtils {
 
 
   /**
+   * Serialize Error objects to preserve their properties
+   * @param {any} obj 
+   */
+  serializeErrors(obj) {
+    if (obj instanceof Error) {
+      return {
+        name: obj.name,
+        message: obj.message,
+        stack: obj.stack,
+        ...obj
+      };
+    }
+    if (typeof obj === 'object' && obj !== null) {
+      const serialized = {};
+      for (const [key, value] of Object.entries(obj)) {
+        serialized[key] = this.serializeErrors(value);
+      }
+      return serialized;
+    }
+    return obj;
+  }
+
+  /**
    * Format all message passed to external endpoint
    * @param  {...any} message 
    */
@@ -136,9 +159,9 @@ class LoggerUtils {
                 ${red}Name:${reset} ${eachMessage.name}
             `;
         } else if (typeof eachMessage === 'object') {
-            formattedMessage = formattedMessage + JSON.stringify(eachMessage);
+            formattedMessage = formattedMessage + ` ${JSON.stringify(this.serializeErrors(eachMessage))}`;
         } else {
-            formattedMessage = formattedMessage + eachMessage;
+            formattedMessage = formattedMessage +  ` ${eachMessage}`;
         }
     });
 

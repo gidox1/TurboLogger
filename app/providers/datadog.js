@@ -17,7 +17,7 @@ const sendLogsToDatadog = async (message, context, level, config) => {
 
     const configuration = client.createConfiguration({
       authMethods: {
-        apiKey: config.apiKey,
+        apiKeyAuth: config.apiKey,
       },
       baseServer: new client.ServerConfiguration(
         config.endpoint || "https://http-intake.logs.datadoghq.eu",
