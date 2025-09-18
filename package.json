@@ -24,12 +24,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gidox1/easyLogger.git"
+    "url": "git+https://github.com/gidox1/TurboLogger.git"
   },
   "author": "gidox1",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gidox1/easyLogger/issues"
+    "url": "https://github.com/gidox1/TurboLogger/issues"
   },
-  "homepage": "https://github.com/gidox1/easyLogger#readme"
+  "homepage": "https://github.com/gidox1/TurboLogger#readme"
 }

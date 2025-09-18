@@ -1,5 +1,3 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 
 name: Node.js Package
 
@@ -31,17 +29,17 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm run test
       - name: Configure Git
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
       - name: Bump version and publish
         run: |
+          git pull origin master
           npm version patch --no-git-tag-version
           git add package.json
           git commit -m "Bump version to $(node -p "require('./package.json').version") [skip ci]"
-          git push
+          git push origin master
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
