@@ -4,8 +4,7 @@
 name: Node.js Package
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - master
 
@@ -25,11 +24,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm publish
+      - run: npm run test
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Bump version and publish
+        run: |
+          npm version patch --no-git-tag-version
+          git add package.json
+          git commit -m "Bump version to $(node -p "require('./package.json').version") [skip ci]"
+          git push
+          npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
