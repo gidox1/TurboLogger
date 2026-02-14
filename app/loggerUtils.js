@@ -170,7 +170,6 @@ class LoggerUtils {
 
 
   /**
-   * 
    * @param {Object} appConfig 
    * @param {Array} env 
    * @param {String} scope 
