@@ -1,6 +1,7 @@
 
 const { client, v2 } = require('@datadog/datadog-api-client');
 const types = require('../types');
+const { toDatadogStatus } = require('./providers.constant');
 
 /**
  * @param {String} message 
@@ -27,17 +28,17 @@ const sendLogsToDatadog = async (message, context, level, config) => {
 
     const logsApi = new v2.LogsApi(configuration);
 
-    // Format log according to Datadog API v2 requirements
     const logEntry = {
-      message: message,
+      ...context,
+      message,
       ddsource: config.source || "nodejs",
       service: config.service,
       hostname: config.hostname || require('os').hostname(),
       ddtags: config.tags || `service:${config.service},env:${config.env},level:${level}`,
-      level: level,
+      level,
       timestamp: new Date().toISOString(),
       env: config.env,
-      ...context,
+      status: toDatadogStatus(level),
     };
 
     await logsApi.submitLog({
