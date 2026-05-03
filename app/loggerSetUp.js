@@ -66,15 +66,17 @@ class LTransport {
    * @param {Object} config 
    */
   pushTransports(transport, config) {
-    const {message, level} = config;
-    
+    const { message, level, meta } = config;
+    const mergedMeta =
+      meta === undefined || meta === null ? {} : meta;
+
     switch (level) {
-      case 'warn' :
-        return transport.warn(message);
-      case 'error': 
-        return transport.error(message);
-      default : 
-        return transport.info(message);
+      case 'warn':
+        return transport.warn(message, mergedMeta);
+      case 'error':
+        return transport.error(message, mergedMeta);
+      default:
+        return transport.info(message, mergedMeta);
     }
   }
 }
