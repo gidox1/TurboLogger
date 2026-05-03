@@ -28,17 +28,27 @@ const sendLogsToDatadog = async (message, context, level, config) => {
 
     const logsApi = new v2.LogsApi(configuration);
 
+    // HTTPLogItem only serializes: message, ddsource, ddtags, hostname, service,
+    // additionalProperties. Root-level status/level/context are dropped by the SDK.
+    const ctx =
+      context && typeof context === "object" ? { ...context } : {};
+    delete ctx.message;
+
     const logEntry = {
-      ...context,
       message,
       ddsource: config.source || "nodejs",
       service: config.service,
-      hostname: config.hostname || require('os').hostname(),
-      ddtags: config.tags || `service:${config.service},env:${config.env},level:${level}`,
-      level,
-      timestamp: new Date().toISOString(),
-      env: config.env,
-      status: toDatadogStatus(level),
+      hostname: config.hostname || require("os").hostname(),
+      ddtags:
+        config.tags ||
+        `service:${config.service},env:${config.env},level:${level}`,
+      additionalProperties: {
+        ...ctx,
+        level,
+        env: config.env,
+        timestamp: new Date().toISOString(),
+        status: toDatadogStatus(level),
+      },
     };
 
     await logsApi.submitLog({
