@@ -12,11 +12,11 @@ class LoggerUtils {
      * @param {String} message 
      * @param {Object} appConfig 
      */
-    async hybridLogger(message, appConfig) {
+    async hybridLogger(message, appConfig, structuredMeta) {
         await this.logSlack(message, appConfig);
         if('console' in appConfig || 'file' in appConfig) {
             delete appConfig.slack;
-            return this.logLevelSetUp(message, appConfig);
+            return this.logLevelSetUp(message, appConfig, structuredMeta);
         }
     }
 
@@ -25,11 +25,12 @@ class LoggerUtils {
      * Set up file and console logger 
      * with the app Config
      * @param {Object} appConfig 
+     * @param {Record<string, unknown>} [structuredMeta] merged plain-object args for providers (e.g. Datadog facets)
      */
-    logLevelSetUp(message, appConfig) {
+    logLevelSetUp(message, appConfig, structuredMeta) {
         let transport;
         const level = appConfig.level;
-        const config = {level, message};
+        const config = {level, message, meta: structuredMeta};
         transport = setUp.createTransports(appConfig);
         return setUp.pushTransports(transport, config);
     }
@@ -50,7 +51,7 @@ class LoggerUtils {
      * Pipes config to Endpoint for the logger
      * @param {String} message 
      */
-    pipeStream(appConfig, message, env) {
+    pipeStream(appConfig, message, env, structuredMeta) {
         let obj = Object.assign({}, env)
         let keys = {};
         this.slackValidator(appConfig, env);
@@ -66,10 +67,10 @@ class LoggerUtils {
             }
         }
         if(this.matchLogger(appConfig, keys)) {
-            return this.hybridLogger(message, appConfig)
+            return this.hybridLogger(message, appConfig, structuredMeta)
         }
         else {
-            return this.logLevelSetUp(message, appConfig);
+            return this.logLevelSetUp(message, appConfig, structuredMeta);
         }
     }
 
@@ -168,6 +169,21 @@ class LoggerUtils {
     return formattedMessage;
   }
 
+  /**
+   * Plain objects in ...message are stringified into the text line; Winston still needs
+   * them as metadata so Datadog (and others) receive structured fields.
+   * @param {Array} messageParts
+   */
+  mergeStructuredMeta(messageParts) {
+    const merged = {};
+    for (const part of messageParts) {
+      if (part && typeof part === 'object' && !(part instanceof Error)) {
+        Object.assign(merged, this.serializeErrors(part));
+      }
+    }
+    return merged;
+  }
+
 
   /**
    * @param {Object} appConfig 
@@ -177,12 +193,13 @@ class LoggerUtils {
    */
     formatMethod(appConfig, env, scope, ...message) {
         const builtMessage = this.buildMesaage(message);
+        const structuredMeta = this.mergeStructuredMeta(message);
         appConfig.level = config.level[scope];
         appConfig.context = config.level[scope];
         if(this.checkENV(env) === false){
             appConfig.console = true;
         }
-        return this.pipeStream(appConfig, builtMessage, env);
+        return this.pipeStream(appConfig, builtMessage, env, structuredMeta);
     }
 }
 
